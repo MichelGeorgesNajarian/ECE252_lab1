@@ -1,0 +1,48 @@
+CONCATENATION
+First string is: . | Second string is: a.out
+./a.out: regular
+CONCATENATION
+First string is: . | Second string is: output.txt
+./output.txt: regular
+CONCATENATION
+First string is: . | Second string is: starter
+CONCATENATION FROM ELSE IF STAE+TEMENT
+First string is: . | Second string is: starter
+CONCATENATION
+First string is: ./starter | Second string is: ls
+CONCATENATION FROM ELSE IF STAE+TEMENT
+First string is: ./starter | Second string is: ls
+CONCATENATION
+First string is: ./starter/ls | Second string is: a.out
+./starter/ls/a.out: regular
+CONCATENATION
+First string is: ./starter/ls | Second string is: ls_ftype.o
+./starter/ls/ls_ftype.o: regular
+CONCATENATION
+First string is: ./starter/ls | Second string is: ls_fname.c
+./starter/ls/ls_fname.c: regular
+CONCATENATION
+First string is: ./starter/ls | Second string is: Makefile
+./starter/ls/Makefile: regular
+CONCATENATION
+First string is: ./starter/ls | Second string is: README.md
+./starter/ls/README.md: regular
+CONCATENATION
+First string is: ./starter/ls | Second string is: ls_ftype.out
+./starter/ls/ls_ftype.out: regular
+CONCATENATION
+First string is: ./starter/ls | Second string is: ls_fname.out
+./starter/ls/ls_fname.out: regular
+CONCATENATION
+First string is: ./starter/ls | Second string is: ls_fname.o
+./starter/ls/ls_fname.o: regular
+CONCATENATION
+First string is: ./starter/ls | Second string is: ls_ftype.c
+./starter/ls/ls_ftype.c: regular
+./starter/ls: directory
+CONCATENATION
+First string is: ./starter | Second string is: pointer
+lstat error: No such file or directory
+CONCATENATION FROM ELSE IF STAE+TEMENT
+First string is: ./starter | Second string is: pointer
+Segmentation fault (core dumped)
