@@ -48,7 +48,6 @@ int main(int argc, char *argv[]){
 }
 
 int findPng(char *parent, int count) {
-    printf("Beginning findPng function, count: %d\n", count);
     DIR *curr_dir;
     char str[64];
     if ((curr_dir = opendir(parent))== NULL) {
@@ -69,8 +68,7 @@ int findPng(char *parent, int count) {
             exit(3);
         } else {
             //printf("%s/%s\n", parent,str_path);
-            count += fileType(str_path,parent,count);
-            printf("count updated: %d\n", count);
+            count = fileType(str_path,parent,count);
         }
     }
     //printf("------------------------------------- Exited the while loop --------------------------------------\n");
@@ -80,7 +78,6 @@ int findPng(char *parent, int count) {
 }
 
 int fileType(char *fileName, char *parentDirectory, int count){
-    printf("beginning fileType function count: %d\n",count);
     char *ptr, *newParent, *str, *path2file;
     struct stat buf;
     path2file = concatenation(parentDirectory, fileName);
@@ -91,12 +88,11 @@ int fileType(char *fileName, char *parentDirectory, int count){
         if(isPng(path2file)) {
             printf("%s\n",path2file);
             count++;
-            printf("fileType count updated count: %d\n",count);
         }
     }
     else if (S_ISDIR(buf.st_mode)){
         newParent = concatenation(parentDirectory,fileName);
-        findPng(newParent,count);
+        count = findPng(newParent,count);
         free(newParent);
     }
     return count;
