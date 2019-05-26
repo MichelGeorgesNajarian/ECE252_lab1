@@ -9,11 +9,16 @@ LD=gcc
 LDFLAGS=-g
 
 
-OBJS=findpng.c
+OBJS1=findpng.o
+OBJS2=catpng.o
 
-all: findpng.out
+all: findpng.out catpng.out
 
-findpng.out: $(OBJS) 
+findpng.out: $(OBJS1) 
+	$(LD) $(LDFLAGS) -o $@ $^
+
+
+catpng.out: $(OBJS2) 
 	$(LD) $(LDFLAGS) -o $@ $^
 
 .c.o:

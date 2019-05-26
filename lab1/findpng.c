@@ -27,9 +27,6 @@ char* concatenation(const char *s1, const char *s2) {
 }
 
 int main(int argc, char *argv[]){
-    int fd;
-    /*struct dirent *p_dirent;*/
-
     if (argc == 1) {
         printf("Need to enter a directory as well. \nRe-run program with a valid starting directory\n");
         exit(1);
@@ -78,7 +75,7 @@ int findPng(char *parent, int count) {
 }
 
 int fileType(char *fileName, char *parentDirectory, int count){
-    char *ptr, *newParent, *str, *path2file;
+    char *newParent, *path2file;
     struct stat buf;
     path2file = concatenation(parentDirectory, fileName);
     if (lstat(path2file, &buf) < 0) {
