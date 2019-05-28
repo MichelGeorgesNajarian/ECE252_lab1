@@ -1,32 +1,37 @@
-#########################################################################
-# ECE252 Lab Makefile
-# Y. Huang, 2018/10/15
-#########################################################################
 
-CC=gcc
-CFLAGS=-Wall -g
-LD=gcc
-LDFLAGS=-g
+# Makefile, ECE252  
+# Yiqing Huang, 2018/11/04
 
+CC = gcc       # compiler
+CFLAGS = -Wall -g -std=c99 # compilation flg 
+LD = gcc       # linker
+LDFLAGS = -g   # debugging symbols in build
+LDLIBS = -lz   # link with libz
 
-OBJS1=findpng.o
-OBJS2=catpng.o
+# For students 
+LIB_UTIL = zutil.o crc.o
+SRCS   = catpng.c crc.c zutil.c
+OBJS   = catpng.o $(LIB_UTIL) 
+OBJS1  = findpng.o
 
-all: findpng.out catpng.out
+TARGETS= catpng.out 
 
-findpng.out: $(OBJS1) 
+all: ${TARGETS} findpng.out
+
+catpng.out: $(OBJS) 
+	$(LD) -o $@ $^ $(LDLIBS) $(LDFLAGS) 
+
+findpng.out: $(OBJS1)
 	$(LD) $(LDFLAGS) -o $@ $^
 
-
-catpng.out: $(OBJS2) 
-	$(LD) $(LDFLAGS) -o $@ $^
-
-.c.o:
-	$(CC) $(CFLAGS) -c $<
+%.o: %.c 
+	$(CC) $(CFLAGS) -c $< 
 
 %.d: %.c
-	gcc -MM -MF $@ $<  
+	gcc -MM -MF $@ $<
+
+-include $(SRCS:.c=.d)
 
 .PHONY: clean
 clean:
-	rm -f *.d *.o *.out 
+	rm -f *.d *.o $(TARGETS) 
