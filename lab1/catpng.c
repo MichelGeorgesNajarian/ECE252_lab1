@@ -56,7 +56,6 @@ int main (int argc, char **argv)
         success = isPng(argv[i]);
         if (success == 0){
             printf("Please enter the correct path to a valid PNG file\n");
-			free(pngFiles);
             return -1;
         }
 
@@ -79,7 +78,9 @@ int main (int argc, char **argv)
 	p_buffer = malloc(PNG_SIG_SIZE+1);
 	fread(p_buffer, 1, PNG_SIG_SIZE, pngFiles);
 	p_buffer[PNG_SIG_SIZE] = '\0';
-	printf("PNG signature: %s", p_buffer);
+
+
+
 
     /* Step 1.2: Fill the buffer with some data */
     init_data(p_buffer, BUF_LEN);
@@ -106,6 +107,7 @@ int main (int argc, char **argv)
     printf("crc_val = %u\n", crc_val);
     
     /* Clean up */
+    fclose(pngFiles);
     free(p_buffer); /* free dynamically allocated memory */
 
     return 0;
