@@ -79,8 +79,12 @@ int main (int argc, char **argv)
 	fread(p_buffer, 1, PNG_SIG_SIZE, pngFiles);
 	p_buffer[PNG_SIG_SIZE] = '\0';
 
+	free(p_buffer);
 
-
+	p_buffer = malloc(CHUNK_LEN_SIZE); //get length of data
+	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
+	printf("%X%X%X%X\n", *(p_buffer), *(p_buffer + 1), *(p_buffer + 2), *(p_buffer + 3));
+	
 
     /* Step 1.2: Fill the buffer with some data */
     init_data(p_buffer, BUF_LEN);
