@@ -8,10 +8,6 @@
 #include "crc.h"      /* for crc()                   */
 #include "zutil.h"    /* for mem_def() and mem_inf() */
 #include "lab_png.h"  /* simple PNG data structures  */
-#include <sys/types.h>/* for data types*/
-#include <sys/stat.h> /* stats of data i.e. last access , READ MAN*/
-#include <unistd.h>   /* for standard symbolic constants and types*/
-#include <string.h>
 
 /******************************************************************************
  * DEFINED MACROS 
@@ -46,22 +42,8 @@ void init_data(U8 *buf, int len)
     }
 }
 
-int isPng(char *);
-
 int main (int argc, char **argv)
 {
-	FILE *pngFiles;
-    int success;
-    for (int i = 1; i < argc; i++){
-        success = isPng(argv[i]);
-        if (success == 0){
-            printf("Please enter the correct path to a valid PNG file\n");
-			free(pngFiles);
-            return -1;
-        }
-
-    }
-
     U8 *p_buffer = NULL;  /* a buffer that contains some data to play with */
     U32 crc_val = 0;      /* CRC value                                     */
     int ret = 0;          /* return value for various routines             */
@@ -75,11 +57,6 @@ int main (int argc, char **argv)
         perror("malloc");
 	return errno;
     }
-	pngFiles = fopen(argv[1], "rb");
-	p_buffer = malloc(PNG_SIG_SIZE+1);
-	fread(p_buffer, 1, PNG_SIG_SIZE, pngFiles);
-	p_buffer[PNG_SIG_SIZE] = '\0';
-	printf("PNG signature: %s", p_buffer);
 
     /* Step 1.2: Fill the buffer with some data */
     init_data(p_buffer, BUF_LEN);
@@ -109,25 +86,4 @@ int main (int argc, char **argv)
     free(p_buffer); /* free dynamically allocated memory */
 
     return 0;
-}
-
-int isPng(char *fullPath) {
-    //printf("isPng path: %s\n",fullPath);
-    FILE *png_file;
-    int trueFalse = 0;
-    unsigned char *bufferSize = malloc(8+1); // 8 bytes + 1 for the \0
-    png_file = fopen(fullPath, "r");
-    if ((png_file = fopen(fullPath, "r"))){
-        fread(bufferSize, 1, 4, png_file);
-        bufferSize[9] = '\0';
-        fclose(png_file);
-        if (bufferSize[1] == 'P' && bufferSize[2] == 'N' && bufferSize[3] == 'G') {
-            trueFalse = 1;
-        }
-    } else {
-        printf("Inexistant file: \"%s\". Please try again\n",fullPath);
-        exit(2);
-    }
-    free(bufferSize);
-    return trueFalse;
 }
