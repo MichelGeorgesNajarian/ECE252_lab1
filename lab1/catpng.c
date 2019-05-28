@@ -95,11 +95,15 @@ int main (int argc, char **argv)
         test->p_IHDR->type[i] = *(p_buffer+i);
     }
 	free(p_buffer);
+    printf("length of data is: %d\n",test->p_IHDR->length);
 	p_buffer = malloc(test->p_IHDR->length);
 	fread(p_buffer, 1, test->p_IHDR->length, pngFiles);
-	test->p_IHDR->p_data = *(p_buffer);
+    for (int i = 0; i < test->p_IHDR->length; i++){
+        *(test->p_IHDR->p_data + i) = *(p_buffer + i);
+    }
+    free(p_buffer);
 
-	printf("%s\n", p_buffer);
+    printf("\n");
 
     /* Step 1.2: Fill the buffer with some data */
     init_data(p_buffer, BUF_LEN);
