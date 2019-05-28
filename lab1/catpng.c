@@ -85,7 +85,19 @@ int main (int argc, char **argv)
 	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
 	printf("%X%X%X%X\n", *(p_buffer), *(p_buffer + 1), *(p_buffer + 2), *(p_buffer + 3));
 	
+	simple_PNG_p *test = malloc(sizeof(struct simple_PNG));
+	test->p_IHDR = malloc(sizeof(struct chunk));
+	test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
+	test->p_IHDR->length = DATA_IHDR_SIZE;
+	free(p_buffer);
+	p_buffer = malloc(sizeof(U8) * 4);
+	fread(p_buffer, 1, sizeof(U8) * 4, pngFiles);
+	test->p_IHDR->type = p_buffer;
 
+	for (int i = 0; i < 4; i++) {
+		printf("%d", test->p_IHDR->type[i]);
+	}
+	printf("\n");
     /* Step 1.2: Fill the buffer with some data */
     init_data(p_buffer, BUF_LEN);
 
