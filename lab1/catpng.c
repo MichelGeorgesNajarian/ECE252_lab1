@@ -52,6 +52,7 @@ int main (int argc, char **argv)
 {
 	FILE *pngFiles;
     int success;
+	U32 totalHeight = 0;
     for (int i = 1; i < argc; i++){
         success = isPng(argv[i]);
         if (success == 0){
@@ -101,11 +102,11 @@ int main (int argc, char **argv)
     for (int i = 0; i < test->p_IHDR->length; i++){
         *(test->p_IHDR->p_data + i) = *(p_buffer + i);
     }
-	for (int i = 0; i < test->p_IHDR->length; i++) {
-		printf("%02X ", *(test->p_IHDR->p_data + i));
-	}
-    free(p_buffer);
-
+	free(p_buffer);
+	data_IHDR_p test_iHDR = malloc(sizeof(struct data_IHDR_p));
+	memcpy(test_iHDR->width, test->p_IHDR->p_data,sizeof(test_iHDR->width));
+	printf("Height of picture is %X bytes", test_iHDR->width);
+    
     printf("\n");
 
     /* Step 1.2: Fill the buffer with some data */
