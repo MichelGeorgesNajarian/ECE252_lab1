@@ -104,8 +104,12 @@ int main (int argc, char **argv)
 	free(p_buffer);
 	data_IHDR_p test_iHDR = malloc(sizeof(struct data_IHDR));
 	memcpy(&(test_iHDR->width), test->p_IHDR->p_data,sizeof(test_iHDR->width));
-	htonl(test_iHDR->width);
-	printf("%02X\n"test_iHDR->width);
+    //test_iHDR->width = ntohl(test_iHDR->width);
+    printf("no ordering adjustments done: %02X\n", test_iHDR->width);
+    printf("htonl: %02X\n", htonl(test_iHDR->width));
+    printf("ntohl: %02X\n", ntohl(test_iHDR->width));
+	test_iHDR->width = htonl(test_iHDR->width);
+	printf("good orer with htonl: %02X\n", test_iHDR->width);
 
     /* Step 1.2: Fill the buffer with some data */
     init_data(p_buffer, BUF_LEN);
