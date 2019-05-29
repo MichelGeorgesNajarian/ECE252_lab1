@@ -121,7 +121,7 @@ void init_iHDR(data_IHDR_p *test_iHDR, char *png_name, U32 *totalHeight) {
 	int incrementation = 0;
 
 	//doing width
-	memcpy(*(test_iHDR->width), test->p_IHDR->p_data, sizeof(test_iHDR->width));
+	memcpy(&(test_iHDR->width), test->p_IHDR->p_data, sizeof(*(test_iHDR->width));
 	//test_iHDR->width = ntohl(test_iHDR->width);
 	printf("no ordering adjustments done: %02X\n", test_iHDR->width);
 	printf("htonl: %02X\n", htonl(*(test_iHDR->width));
