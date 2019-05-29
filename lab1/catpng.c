@@ -101,6 +101,9 @@ int main (int argc, char **argv)
     for (int i = 0; i < test->p_IHDR->length; i++){
         *(test->p_IHDR->p_data + i) = *(p_buffer + i);
     }
+	for (int i = 0; i < test->p_IHDR->length; i++) {
+		printf("%02X ", *(test->p_IHDR->p_data + i));
+	}
     free(p_buffer);
 
     printf("\n");
