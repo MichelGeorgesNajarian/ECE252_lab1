@@ -47,44 +47,59 @@ void init_data(U8 *buf, int len)
 }
 
 int isPng(char *);
+void init_iHDR(data_IHDR_p *, char *, U32 *);
 
-int main (int argc, char **argv)
+int main(int argc, char **argv)
 {
-	FILE *pngFiles;
-    int success;
+	int success;
 	U32 totalHeight = 0;
-    for (int i = 1; i < argc; i++){
-        success = isPng(argv[i]);
-        if (success == 0){
-            printf("Please enter the correct path to a valid PNG file\n");
-            return -1;
-        }
+	for (int i = 1; i < argc; i++) {
+		success = isPng(argv[i]);
+		if (success == 0) {
+			printf("Please enter the correct path to a valid PNG file\n");
+			return -1;
+		}
 
-    }
+	}
+	FILE *concatenated_png;
+	data_IHDR_p test_iHDR = malloc(sizeof(struct data_IHDR));
+	concatenated_png = fopen("all.png", "w");
+	init_iHDR(&test_iHDR, argv[1], *totalHeight);
 
-    U8 *p_buffer = NULL;  /* a buffer that contains some data to play with */
-    U32 crc_val = 0;      /* CRC value                                     */
-    int ret = 0;          /* return value for various routines             */
-    U64 len_def = 0;      /* compressed data length                        */
-    U64 len_inf = 0;      /* uncompressed data length                      */
-    
-    /* Step 1: Initialize some data in a buffer */
-    /* Step 1.1: Allocate a dynamic buffer */
-    p_buffer = malloc(BUF_LEN);
-    if (p_buffer == NULL) {
-        perror("malloc");
-	return errno;
-    }
-	pngFiles = fopen(argv[1], "rb");
-	p_buffer = malloc(PNG_SIG_SIZE+1);
+	for (int i = 1; i < argc; i++) {
+		
+	}
+
+	fclose(concatenated_png);
+	free(test_iHDR);
+
+	return 0
+}
+
+void init_iHDR(data_IHDR_p *test_iHDR, char *png_name, U32 *totalHeight) {
+	FILE *pngFiles;
+	U8 *p_buffer = NULL;  /* a buffer that contains some data to play with */
+	U32 crc_val = 0;      /* CRC value                                     */
+	int ret = 0;          /* return value for various routines             */
+	U64 len_def = 0;      /* compressed data length                        */
+	U64 len_inf = 0;      /* uncompressed data length                      */
+
+	/* Step 1: Initialize some data in a buffer */
+	/* Step 1.1: Allocate a dynamic buffer */
+	p_buffer = malloc(BUF_LEN);
+	if (p_buffer == NULL) {
+		perror("malloc");
+		return errno;
+	}
+	pngFiles = fopen(png_name, "rb");
+	p_buffer = malloc(PNG_SIG_SIZE);
 	fread(p_buffer, 1, PNG_SIG_SIZE, pngFiles);
-	p_buffer[PNG_SIG_SIZE] = '\0';
 
 	free(p_buffer);
 
 	p_buffer = malloc(CHUNK_LEN_SIZE); //get length of data
 	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
-	
+
 	simple_PNG_p test = malloc(sizeof(struct simple_PNG));
 	test->p_IHDR = malloc(sizeof(struct chunk));
 	test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
@@ -92,55 +107,91 @@ int main (int argc, char **argv)
 	free(p_buffer);
 	p_buffer = malloc(sizeof(U8) * 4);
 	fread(p_buffer, 1, sizeof(U8) * 4, pngFiles);
-	for (int i = 0; i < 4; i++){
-        test->p_IHDR->type[i] = *(p_buffer+i);
-    }
+	for (int i = 0; i < 4; i++) {
+		test->p_IHDR->type[i] = *(p_buffer + i);
+	}
 	free(p_buffer);
 	p_buffer = malloc(test->p_IHDR->length);
 	fread(p_buffer, 1, test->p_IHDR->length, pngFiles);
-    for (int i = 0; i < test->p_IHDR->length; i++){
-        *(test->p_IHDR->p_data + i) = *(p_buffer + i);
-    }
+	for (int i = 0; i < test->p_IHDR->length; i++) {
+		*(test->p_IHDR->p_data + i) = *(p_buffer + i);
+	}
 	free(p_buffer);
-	data_IHDR_p test_iHDR = malloc(sizeof(struct data_IHDR));
-	memcpy(&(test_iHDR->width), test->p_IHDR->p_data,sizeof(test_iHDR->width));
-    //test_iHDR->width = ntohl(test_iHDR->width);
-    printf("no ordering adjustments done: %02X\n", test_iHDR->width);
-    printf("htonl: %02X\n", htonl(test_iHDR->width));
-    printf("ntohl: %02X\n", ntohl(test_iHDR->width));
-	test_iHDR->width = htonl(test_iHDR->width);
-	printf("good orer with htonl: %02X\n", test_iHDR->width);
+
+	int incrementation = 0;
+
+	//doing width
+	memcpy(test_iHDR->width, test->p_IHDR->p_data, sizeof(*(test_iHDR->width)));
+	//test_iHDR->width = ntohl(test_iHDR->width);
+	printf("no ordering adjustments done: %02X\n", test_iHDR->width);
+	printf("htonl: %02X\n", htonl(*(test_iHDR->width));
+	printf("ntohl: %02X\n", ntohl(*(test_iHDR->width));
+	*(test_iHDR->width) = htonl(*(test_iHDR->width));
+
+	incrementation += sizeof(*(test_iHDR->width));
+
+	//doing height
+	memcpy(test_iHDR->height, test->p_IHDR->p_data + incrementation, sizeof(*(test_iHDR->height)));
+	incrementation += sizeof(*(test_iHDR->height));
+	test_iHDR->height = htonl(*(test_iHDR->height));
+	*(totalHeight) += *(test_iHDR->height);
+
+	//doing	bit depth
+	memcpy(test_iHDR->bit_depth, test->p_IHDR->p_data + incrementation, sizeof(*(test_iHDR->bit_depth)));
+	incrementation += sizeof(*(test_iHDR->bit_depth));
+	*(test_iHDR->bit_depth) = htonl(*(test_iHDR->height));
+
+	//doing color type
+	memcpy(test_iHDR->color_type, test->p_IHDR->p_data + incrementation; sizeof(*(test_iHDR->color_type));
+	incrementation += sizeof(*(test_iHDR->color_type));
+	*(test_iHDR->color_type) = htonl(*(test_iHDR->color_type));
+
+	//doing compression
+	memcpy(test_iHDR->compression, test->p_IHDR->p_data + incrementation; sizeof(*(test_iHDR->compression));
+	incrementation += sizeof(*(test_iHDR->compression));
+	*(test_iHDR->compression) = htonl(*(test_iHDR->compression));
+
+	//doing filter
+	memcpy(test_iHDR->filter, test->p_IHDR->p_data + incrementation; sizeof(*(test_iHDR->filter));
+	incrementation += sizeof(*(test_iHDR->filter));
+	*(test_iHDR->filter) = htonl(*(test_iHDR->filter));
+
+	//doing interlace
+	memcpy(test_iHDR->interlace, test->p_IHDR->p_data + incrementation; sizeof(*(test_iHDR->interlace));
+	incrementation += sizeof(*(test_iHDR->interlace));
+	*(test_iHDR->interlace) = htonl(*(test_iHDR->interlace));
+}
 
     /* Step 1.2: Fill the buffer with some data */
-    init_data(p_buffer, BUF_LEN);
-
-    /* Step 2: Demo how to use zlib utility */
-    ret = mem_def(gp_buf_def, &len_def, p_buffer, BUF_LEN, Z_DEFAULT_COMPRESSION);
-    if (ret == 0) { /* success */
-        printf("original len = %d, len_def = %lu\n", BUF_LEN, len_def);
-    } else { /* failure */
-        fprintf(stderr,"mem_def failed. ret = %d.\n", ret);
-        return ret;
-    }
-    
-    ret = mem_inf(gp_buf_inf, &len_inf, gp_buf_def, len_def);
-    if (ret == 0) { /* success */
-        printf("original len = %d, len_def = %lu, len_inf = %lu\n", \
-               BUF_LEN, len_def, len_inf);
-    } else { /* failure */
-        fprintf(stderr,"mem_def failed. ret = %d.\n", ret);
-    }
-
-    /* Step 3: Demo how to use the crc utility */
-    crc_val = crc(gp_buf_def, len_def); // down cast the return val to U32
-    printf("crc_val = %u\n", crc_val);
-    
-    /* Clean up */
-    fclose(pngFiles);
-    free(p_buffer); /* free dynamically allocated memory */
-
-    return 0;
-}
+//    init_data(p_buffer, BUF_LEN);
+//
+//    /* Step 2: Demo how to use zlib utility */
+//    ret = mem_def(gp_buf_def, &len_def, p_buffer, BUF_LEN, Z_DEFAULT_COMPRESSION);
+//    if (ret == 0) { /* success */
+//        printf("original len = %d, len_def = %lu\n", BUF_LEN, len_def);
+//    } else { /* failure */
+//        fprintf(stderr,"mem_def failed. ret = %d.\n", ret);
+//        return ret;
+//    }
+//    
+//    ret = mem_inf(gp_buf_inf, &len_inf, gp_buf_def, len_def);
+//    if (ret == 0) { /* success */
+//        printf("original len = %d, len_def = %lu, len_inf = %lu\n", \
+//               BUF_LEN, len_def, len_inf);
+//    } else { /* failure */
+//        fprintf(stderr,"mem_def failed. ret = %d.\n", ret);
+//    }
+//
+//    /* Step 3: Demo how to use the crc utility */
+//    crc_val = crc(gp_buf_def, len_def); // down cast the return val to U32
+//    printf("crc_val = %u\n", crc_val);
+//    
+//    /* Clean up */
+//    fclose(pngFiles);
+//    free(p_buffer); /* free dynamically allocated memory */
+//
+//    return 0;
+//}
 
 int isPng(char *fullPath) {
     //printf("isPng path: %s\n",fullPath);
