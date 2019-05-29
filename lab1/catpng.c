@@ -105,7 +105,7 @@ int main (int argc, char **argv)
 	data_IHDR_p test_iHDR = malloc(sizeof(struct data_IHDR));
 	unsigned int *tt = malloc(sizeof(test_iHDR->width));
 	memcpy(tt, test->p_IHDR->p_data, sizeof(test_iHDR->width));
-	printf("%lu\n", *tt);
+	printf("%X\n", *tt);
 	memcpy(&(test_iHDR->width), test->p_IHDR->p_data,sizeof(test_iHDR->width));
 
     /* Step 1.2: Fill the buffer with some data */
