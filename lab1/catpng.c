@@ -107,17 +107,17 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, si
 	///////////////simple_PNG_p test = malloc(sizeof(struct simple_PNG));
 	///////////////test->p_IHDR = malloc(sizeof(struct chunk));
 	///////////////test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
-	*(test->p_IHDR->length) = DATA_IHDR_SIZE;
+	test->p_IHDR->length = DATA_IHDR_SIZE;
 	free(p_buffer);
 	p_buffer = malloc(sizeof(U8) * 4);
 	fread(p_buffer, 1, sizeof(U8) * 4, pngFiles);
 	for (int i = 0; i < 4; i++) {
-		*(test->p_IHDR->type[i]) = *(p_buffer + i);
+		test->p_IHDR->type[i])= *(p_buffer + i);
 	}
 	free(p_buffer);
-	p_buffer = malloc((*test->p_IHDR->length));
-	fread(p_buffer, 1, *(test->p_IHDR->length), pngFiles);
-	for (int i = 0; i < *(test->p_IHDR->length); i++) {
+	p_buffer = malloc(test->p_IHDR->length);
+	fread(p_buffer, 1, test->p_IHDR->length), pngFiles);
+	for (int i = 0; i < test->p_IHDR->length); i++) {
 		*(test->p_IHDR->p_data + i) = *(p_buffer + i);
 	}
 	free(p_buffer);
@@ -125,7 +125,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, si
 	int incrementation = 0;
 
 	//doing width
-	memcpy(&test_iHDR->width, *(test->p_IHDR->p_data, sizeof(test_iHDR->width));
+	memcpy(&test_iHDR->width, *(test->p_IHDR->p_data), sizeof(test_iHDR->width));
 	incrementation += sizeof(test_iHDR->width);
 	test_iHDR->width = htonl(test_iHDR->width);
 
