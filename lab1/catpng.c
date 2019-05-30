@@ -48,6 +48,9 @@ void init_data(U8 *buf, int len)
 
 int isPng(char *);
 void init_iHDR(struct data_IHDR *, char *, U32 *, struct simple_PNG *);
+void init_iDAT( FILE *, char *, U32 *, struct simple_PNG *);
+void init_iEND();
+char* concatenation(char *, char *);
 
 int main(int argc, char **argv)
 {
@@ -65,24 +68,16 @@ int main(int argc, char **argv)
 	struct data_IHDR test_iHDR;
 	struct simple_PNG test;
 	test.p_IHDR = malloc(sizeof(struct chunk));
+	memset(test.p_IHDR, 0, sizeof(struct chunk));
 	test.p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
+	memset(test.p_IHDR->p_data, 0, DATA_IHDR_SIZE);
 	test.p_IHDR->length = DATA_IHDR_SIZE;
 
 	concatenated_png = fopen("all.png", "w");
     
 	for (int i = 1; i < argc; i++) {
 		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test);
-		printf("\nUpdated height is: %04X\n", totalHeight);
 	}
-	printf("%lu\n", sizeof(test.p_IHDR->p_data));
-	printf("\n\n-----------------------------------------------------------------------------------------------------------------\n\n");
-	for (int i = 0; i < 13; i++) {
-		printf("%02X", *(test.p_IHDR->p_data + i));
-	}
-	printf("\n\n-----------------------------------------------------------------------------------------------------------------\n\n");
-
-	printf("width: %04X\nheight: %04X\nbit depth: %02X\ncolor type: %02X\ncompression: %02X\nfilter: %02X\ninterlace: %02X\n", test_iHDR.width, test_iHDR.height, test_iHDR.bit_depth, test_iHDR.color_type, test_iHDR.compression, test_iHDR.filter, test_iHDR.interlace);
-	printf("\n\nCurrent height is: %04X\n", test_iHDR.height);
 
 
 	fclose(concatenated_png);
@@ -107,25 +102,28 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	}
 	pngFiles = fopen(png_name, "rb");
 	p_buffer = malloc(PNG_SIG_SIZE);
+	memset(p_buffer, 0, PNG_SIG_SIZE);
 	fread(p_buffer, 1, PNG_SIG_SIZE, pngFiles);
 
 	free(p_buffer);
 
 	p_buffer = malloc(CHUNK_LEN_SIZE); //get length of data
+	memset(p_buffer, 0, CHUNK_LEN_SIZE);
 	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
-
 	//simple_PNG_p test = malloc(sizeof(struct simple_PNG));
 	
 	//test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	//test->p_IHDR->length = DATA_IHDR_SIZE;
 	free(p_buffer);
 	p_buffer = malloc(sizeof(U8) * 4);
+	memset(p_buffer, 0, sizeof(U8) * 4);
 	fread(p_buffer, 1, sizeof(U8) * 4, pngFiles);
 	for (int i = 0; i < 4; i++) {
 		test->p_IHDR->type[i] = *(p_buffer + i);
 	}
 	free(p_buffer);
 	p_buffer = malloc(test->p_IHDR->length);
+	memset(p_buffer, 0, test->p_IHDR->length)
 	fread(p_buffer, 1, test->p_IHDR->length, pngFiles);
 	for (int i = 0; i < test->p_IHDR->length; i++) {
 		*(test->p_IHDR->p_data + i) = *(p_buffer + i);
@@ -141,7 +139,6 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 
 	//doing height
 	memcpy(&test_iHDR->height, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->height));
-	printf("1) %lX\n", test_iHDR->height);
 	test_iHDR->height = htonl(test_iHDR->height);
 	*(totalHeight) += test_iHDR->height;
 	test_iHDR->height = *(totalHeight); //updating max height
@@ -176,6 +173,51 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	incrementation += sizeof(test_iHDR->interlace);
 	
 	//test_iHDR->interlace = htonl(test_iHDR->interlace);
+
+	init_iDAT(pngFiles, png_name, totalHeight, test);
+}
+
+void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_PNG *test) {
+	U8 *p_buffer = NULL;  /* a buffer that contains some data to play with */
+	U32 crc_val = 0;      /* CRC value                                     */
+	int ret = 0;          /* return value for various routines             */
+	U64 len_def = 0;      /* compressed data length                        */
+	U64 len_inf = 0;      /* uncompressed data length                      */
+
+	p_buffer = malloc(CHUNK_LEN_SIZE); //get length of data
+	memset(p_buffer, 0, CHUNK_LEN_SIZE);
+	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
+
+	U32 chuck_length = *p_buffer;
+
+	printf("Chuck length %u \n", chuck_length);
+
+	//simple_PNG_p test = malloc(sizeof(struct simple_PNG));
+
+	//test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
+	//test->p_IHDR->length = DATA_IHDR_SIZE;
+	free(p_buffer);
+	p_buffer = malloc(sizeof(U8) * 4);
+	memset(p_buffer, 0, sizeof(U8) * 4);
+	fread(p_buffer, 1, sizeof(U8) * 4, pngFiles);
+	for (int i = 0; i < 4; i++) {
+		test->p_IHDR->type[i] = *(p_buffer + i);
+
+}
+
+void init_iEND()
+{
+}
+
+char* concatenation(const char *s1, const char *s2) {
+	//printf("First string is: %s | Second string is: %s\n", s1, s2);
+	char *con = malloc(strlen(s1) + strlen(s2) + 1); /*length of s1 + length of s2 + \0 + "/" since it's added between the concatenations*/
+	memset(con, 0, strlen(s1) + strlen(s2) + 1)
+	strcpy(con, s1);
+	con[strlen(s1)] = '\0';
+	strcat(con, s2);
+	con[strlen(con)] = '\0';
+	return con;
 }
 
     /* Step 1.2: Fill the buffer with some data */
@@ -214,6 +256,7 @@ int isPng(char *fullPath) {
     FILE *png_file;
     int trueFalse = 0;
     unsigned char *bufferSize = malloc(8+1); // 8 bytes + 1 for the \0
+	memset(bufferSize, 0, 8 + 1);
     png_file = fopen(fullPath, "r");
     if ((png_file = fopen(fullPath, "r"))){
         fread(bufferSize, 1, 4, png_file);
