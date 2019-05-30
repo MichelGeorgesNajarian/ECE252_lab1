@@ -227,9 +227,11 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
 		test->p_IDAT->type[i] = *(p_buffer + i);
 	}
+	printf("\n\n");
 	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
 		printf("%02X", test->p_IDAT->type[i]);
 	}
+	printf("\n\n");
 	free(p_buffer);
 }
 
