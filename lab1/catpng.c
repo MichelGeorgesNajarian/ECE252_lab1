@@ -139,7 +139,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	*(totalHeight) += test_iHDR->height;
 	test_iHDR->height = *(totalHeight); //updating max height
 	memcpy(test->p_IHDR->p_data + incrementation, &test_iHDR, sizeof(test_iHDR->height));
-	printf("------------------ Height from test: %02X%02X%02X%02X\n", *(test->p_IHDR->p_data + incrementation), *(test->p_IHDR->p_data + incrementation + 1), *(test->p_IHDR->p_data + incrementation + 2), *(test->p_IHDR->p_data + incrementation + 3));
+	printf("------------------ Height from test: %02X%02X%02X%02X\n", test->p_IHDR->p_data + incrementation, test->p_IHDR->p_data + incrementation + 1, test->p_IHDR->p_data + incrementation + 2, test->p_IHDR->p_data + incrementation + 3);
 	incrementation += sizeof(test_iHDR->height);
 
 	//doing	bit depth
