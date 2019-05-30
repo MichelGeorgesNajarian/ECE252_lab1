@@ -64,13 +64,15 @@ int main(int argc, char **argv)
 	FILE *concatenated_png;
 	struct data_IHDR test_iHDR;
 	concatenated_png = fopen("all.png", "w");
-    printf("width: %04X\nheight: %04X\nbit depth: %02X\ncolor type: %02X\ncompression: %02X\nfilter: %02X\ninterlace: %02X\n",test_iHDR.width,test_iHDR.height,test_iHDR.bit_depth,test_iHDR.color_type,test_iHDR.compression,test_iHDR.filter,test_iHDR.interlace);
-    printf("\n\nCurrent height is: %04X\n", test_iHDR.height);
-
+    
 	for (int i = 1; i < argc; i++) {
 		init_iHDR(&test_iHDR, argv[i], &totalHeight);
 		printf("\nUpdated height is: %04X\n", totalHeight);
 	}
+
+	printf("width: %04X\nheight: %04X\nbit depth: %02X\ncolor type: %02X\ncompression: %02X\nfilter: %02X\ninterlace: %02X\n", test_iHDR.width, test_iHDR.height, test_iHDR.bit_depth, test_iHDR.color_type, test_iHDR.compression, test_iHDR.filter, test_iHDR.interlace);
+	printf("\n\nCurrent height is: %04X\n", test_iHDR.height);
+
 
 	fclose(concatenated_png);
 
@@ -137,8 +139,6 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight) {
 	memcpy(&test_iHDR->bit_depth, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->bit_depth));
 	incrementation += sizeof(test_iHDR->bit_depth);
 	//test_iHDR->bit_depth = htonl(test_iHDR->height);
-	printf("gibberish %02X\n", *(test->p_IHDR->p_data + incrementation));
-	printf("test_iHDR%02X\n", test_iHDR->bit_depth);
 
 	//doing color type
 	memcpy(&test_iHDR->color_type, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->color_type));
