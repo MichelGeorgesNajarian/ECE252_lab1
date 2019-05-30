@@ -105,7 +105,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 
 	//simple_PNG_p test = malloc(sizeof(struct simple_PNG));
 	//test->p_IHDR = malloc(sizeof(struct chunk));
-	&test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
+	test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	test->p_IHDR->length = DATA_IHDR_SIZE;
 	free(p_buffer);
 	p_buffer = malloc(sizeof(U8) * 4);
