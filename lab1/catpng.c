@@ -181,6 +181,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 }
 
 void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_PNG *test) {
+	test->p_IDAT = malloc(sizeof(struct chunk));
 	U8 *p_buffer = NULL;  /* a buffer that contains some data to play with */
 	U32 crc_val = 0;      /* CRC value                                     */
 	int ret = 0;          /* return value for various routines             */
@@ -201,7 +202,7 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 	memcpy(&chuck_length, p_buffer, CHUNK_LEN_SIZE);
 	chuck_length = htonl(chuck_length);
 
-	*test->p_IDAT->length = chuck_length;
+	test->p_IDAT->length = chuck_length;
 
 	printf("Chunk length %X \n", chuck_length);
 
