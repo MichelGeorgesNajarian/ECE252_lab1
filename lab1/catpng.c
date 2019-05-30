@@ -184,8 +184,15 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 	U64 len_def = 0;      /* compressed data length                        */
 	U64 len_inf = 0;      /* uncompressed data length                      */
 
+	p_buffer = malloc(CHUNK_CRC_SIZE); //get length of data
+	memset(p_buffer, 0, CHUNK_CRC_SIZE);
+	fread(p_buffer, 1, CHUNK_CRC_SIZE, pngFiles);
+
+	free(p_buffer);
+
 	p_buffer = malloc(CHUNK_LEN_SIZE); //get length of data
 	memset(p_buffer, 0, CHUNK_LEN_SIZE);
+
 	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
 
 	for (int i = 0; i < CHUNK_LEN_SIZE; i++) {
