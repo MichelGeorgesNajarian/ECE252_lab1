@@ -47,7 +47,7 @@ void init_data(U8 *buf, int len)
 }
 
 int isPng(char *);
-void init_iHDR(struct data_IHDR *, char *, U32 *, simple_PNG_p *);
+void init_iHDR(struct data_IHDR *, char *, U32 *);
 
 int main(int argc, char **argv)
 {
@@ -63,15 +63,12 @@ int main(int argc, char **argv)
 	}
 	FILE *concatenated_png;
 	struct data_IHDR test_iHDR;
-	simple_PNG_p *test = malloc(sizeof(struct simple_PNG));
-	test->p_IHDR = malloc(sizeof(struct chunk));
-	test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	concatenated_png = fopen("all.png", "w");
     printf("width: %04X\nheight: %04X\nbit depth: %02X\ncolor type: %02X\ncompression: %02X\nfilter: %02X\ninterlace: %02X\n",test_iHDR.width,test_iHDR.height,test_iHDR.bit_depth,test_iHDR.color_type,test_iHDR.compression,test_iHDR.filter,test_iHDR.interlace);
     printf("\n\nCurrent height is: %04X\n", test_iHDR.height);
 
 	for (int i = 1; i < argc; i++) {
-		init_iHDR(&test_iHDR, argv[i], &totalHeight, test);
+		init_iHDR(&test_iHDR, argv[i], &totalHeight);
 		printf("\nUpdated height is: %04X\n", totalHeight);
 	}
 
@@ -80,7 +77,7 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, simple_PNG_p *test) {
+void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight) {
 	FILE *pngFiles;
 	U8 *p_buffer = NULL;  /* a buffer that contains some data to play with */
 	U32 crc_val = 0;      /* CRC value                                     */
@@ -104,20 +101,20 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, si
 	p_buffer = malloc(CHUNK_LEN_SIZE); //get length of data
 	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
 
-	///////////////simple_PNG_p test = malloc(sizeof(struct simple_PNG));
-	///////////////test->p_IHDR = malloc(sizeof(struct chunk));
-	///////////////test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
+	simple_PNG_p test = malloc(sizeof(struct simple_PNG));
+	test->p_IHDR = malloc(sizeof(struct chunk));
+	test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	test->p_IHDR->length = DATA_IHDR_SIZE;
 	free(p_buffer);
 	p_buffer = malloc(sizeof(U8) * 4);
 	fread(p_buffer, 1, sizeof(U8) * 4, pngFiles);
 	for (int i = 0; i < 4; i++) {
-		test->p_IHDR->type[i])= *(p_buffer + i);
+		test->p_IHDR->type[i] = *(p_buffer + i);
 	}
 	free(p_buffer);
 	p_buffer = malloc(test->p_IHDR->length);
-	fread(p_buffer, 1, test->p_IHDR->length), pngFiles);
-	for (int i = 0; i < test->p_IHDR->length); i++) {
+	fread(p_buffer, 1, test->p_IHDR->length, pngFiles);
+	for (int i = 0; i < test->p_IHDR->length; i++) {
 		*(test->p_IHDR->p_data + i) = *(p_buffer + i);
 	}
 	free(p_buffer);
