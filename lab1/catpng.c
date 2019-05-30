@@ -64,7 +64,6 @@ int main(int argc, char **argv)
 	FILE *concatenated_png;
 	struct data_IHDR test_iHDR;
 	concatenated_png = fopen("all.png", "w");
-	init_iHDR(&test_iHDR, argv[1], &totalHeight);
     printf("width: %04X\nheight: %04X\nbit depth: %02X\ncolor type: %02X\ncompression: %02X\nfilter: %02X\ninterlace: %02X\n",test_iHDR.width,test_iHDR.height,test_iHDR.bit_depth,test_iHDR.color_type,test_iHDR.compression,test_iHDR.filter,test_iHDR.interlace);
     printf("\n\nCurrent height is: %04X\n", test_iHDR.height);
 
