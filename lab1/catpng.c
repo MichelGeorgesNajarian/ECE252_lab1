@@ -74,6 +74,7 @@ int main(int argc, char **argv)
 	test.p_IHDR->length = DATA_IHDR_SIZE;
 	test.p_IDAT = malloc(sizeof(struct chunk));
 	memset(test.p_IDAT, 0, sizeof(struct chunk));
+	test.p_IDAT->length = 0;
 	test.p_IEND = malloc(sizeof(struct chunk));
 	memset(test.p_IEND, 0, sizeof(struct chunk));
 
@@ -207,7 +208,9 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 
 	U32 chuck_length;
 	memcpy(&chuck_length, p_buffer, CHUNK_LEN_SIZE);
+	printf("before htonl: %X \n", chuck_length);
 	chuck_length = htonl(chuck_length);
+	printf("after htonl: %X \n", chuck_length);
 
 	test->p_IDAT->length += chuck_length;
 
