@@ -74,6 +74,7 @@ int main(int argc, char **argv)
 		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test);
 		printf("\nUpdated height is: %04X\n", totalHeight);
 	}
+	printf("%lu\n", sizeof(test.p_IHDR->p_data));
 	printf("\n\n-----------------------------------------------------------------------------------------------------------------\n\n");
 	for (int i = 0; i < 13; i++) {
 		printf("%02X", *(test.p_IHDR->p_data + i));
@@ -144,7 +145,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	test_iHDR->height = htonl(test_iHDR->height);
 	*(totalHeight) += test_iHDR->height;
 	test_iHDR->height = *(totalHeight); //updating max height
-	memcpy(test->p_IHDR->p_data + incrementation, &test_iHDR->height, sizeof(test_iHDR->height));
+	memcpy(test->p_IHDR->p_data + incrementation, &(htonl(test_iHDR->height)), sizeof(test_iHDR->height));
 	//printf("------------------ Height from test: %02X%02X%02X%02X\n", *(test->p_IHDR->p_data + incrementation), *(test->p_IHDR->p_data + incrementation + 1), *(test->p_IHDR->p_data + incrementation + 2), *(test->p_IHDR->p_data + incrementation + 3));
 	incrementation += sizeof(test_iHDR->height);
 
