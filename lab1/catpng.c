@@ -50,7 +50,7 @@ int isPng(char *);
 void init_iHDR(struct data_IHDR *, char *, U32 *, struct simple_PNG *);
 void init_iDAT( FILE *, char *, U32 *, struct simple_PNG *);
 void init_iEND();
-char* concatenation(char *, char *);
+char* concatenation(const char *, const char *);
 
 int main(int argc, char **argv)
 {
