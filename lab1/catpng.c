@@ -125,39 +125,39 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, si
 	int incrementation = 0;
 
 	//doing width
-	memcpy(&test_iHDR->width, *(test->p_IHDR->p_data), sizeof(test_iHDR->width));
+	memcpy(&test_iHDR->width, test->p_IHDR->p_data, sizeof(test_iHDR->width));
 	incrementation += sizeof(test_iHDR->width);
 	test_iHDR->width = htonl(test_iHDR->width);
 
 	//doing height
-	memcpy(&test_iHDR->height, *(test->p_IHDR->p_data + incrementation), sizeof(test_iHDR->height));
+	memcpy(&test_iHDR->height, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->height));
 	incrementation += sizeof(test_iHDR->height);
 	test_iHDR->height = htonl(test_iHDR->height);
 	*(totalHeight) += test_iHDR->height;
 	test_iHDR->height = *(totalHeight); //updating max height
 
 	//doing	bit depth
-	memcpy(&test_iHDR->bit_depth, *(test->p_IHDR->p_data + incrementation), sizeof(test_iHDR->bit_depth));
+	memcpy(&test_iHDR->bit_depth, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->bit_depth));
 	incrementation += sizeof(test_iHDR->bit_depth);
 	//test_iHDR->bit_depth = htonl(test_iHDR->height);
 
 	//doing color type
-	memcpy(&test_iHDR->color_type, *(test->p_IHDR->p_data + incrementation), sizeof(test_iHDR->color_type));
+	memcpy(&test_iHDR->color_type, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->color_type));
 	incrementation += sizeof(test_iHDR->color_type);
 	//test_iHDR->color_type = htonl(test_iHDR->color_type);
 
 	//doing compression
-	memcpy(&test_iHDR->compression, *(test->p_IHDR->p_data + incrementation), sizeof(test_iHDR->compression));
+	memcpy(&test_iHDR->compression, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->compression));
 	incrementation += sizeof(test_iHDR->compression);
 	//test_iHDR->compression = htonl(test_iHDR->compression);
 
 	//doing filter
-	memcpy(&test_iHDR->filter, *(test->p_IHDR->p_data + incrementation), sizeof(test_iHDR->filter));
+	memcpy(&test_iHDR->filter, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->filter));
 	incrementation += sizeof(test_iHDR->filter);
 	//test_iHDR->filter = htonl(test_iHDR->filter);
 
 	//doing interlace
-	memcpy(&test_iHDR->interlace, *(test->p_IHDR->p_data + incrementation), sizeof(test_iHDR->interlace));
+	memcpy(&test_iHDR->interlace, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->interlace));
 	incrementation += sizeof(test_iHDR->interlace);
 	//test_iHDR->interlace = htonl(test_iHDR->interlace);
 }
