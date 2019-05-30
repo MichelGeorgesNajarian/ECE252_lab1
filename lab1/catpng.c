@@ -173,7 +173,14 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	incrementation += sizeof(test_iHDR->interlace);
 	
 	//test_iHDR->interlace = htonl(test_iHDR->interlace);
-
+	p_buffer = malloc(CHUNK_CRC_SIZE);
+	memset(p_buffer, 0, CHUNK_CRC_SIZE);
+	fread(p_buffer, 1, CHUNK_CRC_SIZE, pngFiles);
+	for (int i = 0; i < CHUNK_CRC_SIZE; i++) {
+		printf("%02X", *(p_buffer + i));
+	}
+	printf("\n");
+	free(p_buffer);
 	init_iDAT(pngFiles, png_name, totalHeight, test);
 }
 
