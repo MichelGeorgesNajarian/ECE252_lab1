@@ -202,7 +202,7 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 	fread(p_buffer, 1, sizeof(U8) * 4, pngFiles);
 	for (int i = 0; i < 4; i++) {
 		test->p_IHDR->type[i] = *(p_buffer + i);
-
+	}
 }
 
 void init_iEND()
