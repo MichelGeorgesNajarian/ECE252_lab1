@@ -47,7 +47,7 @@ void init_data(U8 *buf, int len)
 }
 
 int isPng(char *);
-void init_iHDR(struct data_IHDR *, char *, U32 *);
+void init_iHDR(struct data_IHDR *, char *, U32 *, struct simple_PNG *);
 
 int main(int argc, char **argv)
 {
