@@ -65,8 +65,8 @@ int main(int argc, char **argv)
 	struct data_IHDR test_iHDR;
 	struct simple_PNG test;
 	test.p_IHDR = malloc(sizeof(struct chunk));
-	test.p_IHDR.p_data = malloc(DATA_IHDR_SIZE);
-	test.p_IHDR.length = DATA_IHDR_SIZE;
+	test.p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
+	test.p_IHDR->length = DATA_IHDR_SIZE;
 
 	concatenated_png = fopen("all.png", "w");
     
