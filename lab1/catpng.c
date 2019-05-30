@@ -47,7 +47,7 @@ void init_data(U8 *buf, int len)
 }
 
 int isPng(char *);
-void init_iHDR(struct data_IHDR *, char *, U32 *);
+void init_iHDR(struct data_IHDR *, char *, U32 *, struct simple_PNG *);
 
 int main(int argc, char **argv)
 {
@@ -63,10 +63,13 @@ int main(int argc, char **argv)
 	}
 	FILE *concatenated_png;
 	struct data_IHDR test_iHDR;
+	struct simple_PNG test;
+	test.p_IHDR = malloc(sizeof(struct chunk));
+
 	concatenated_png = fopen("all.png", "w");
     
 	for (int i = 1; i < argc; i++) {
-		init_iHDR(&test_iHDR, argv[i], &totalHeight);
+		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test);
 		printf("\nUpdated height is: %04X\n", totalHeight);
 	}
 
@@ -79,7 +82,7 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight) {
+void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, struct simple_PNG *test) {
 	FILE *pngFiles;
 	U8 *p_buffer = NULL;  /* a buffer that contains some data to play with */
 	U32 crc_val = 0;      /* CRC value                                     */
@@ -104,7 +107,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight) {
 	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
 
 	simple_PNG_p test = malloc(sizeof(struct simple_PNG));
-	test->p_IHDR = malloc(sizeof(struct chunk));
+	
 	test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	test->p_IHDR->length = DATA_IHDR_SIZE;
 	free(p_buffer);
