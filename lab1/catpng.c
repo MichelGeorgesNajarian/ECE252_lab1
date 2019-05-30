@@ -191,7 +191,7 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 	free(p_buffer);
 
 	p_buffer = malloc(CHUNK_LEN_SIZE +1); //get length of data
-	memset(p_buffer, 0, CHUNK_LEN_SIZE);
+	memset(p_buffer, 0, CHUNK_LEN_SIZE + 1);
 
 	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
 
