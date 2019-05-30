@@ -156,7 +156,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight) {
 	//doing interlace
 	memcpy(&test_iHDR->interlace, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->interlace));
 	incrementation += sizeof(test_iHDR->interlace);
-	printf("gibberish %02X\n", p_IHDR->p_data + incrementation);
+	printf("gibberish %02X\n", *(p_IHDR->p_data + incrementation));
 	//test_iHDR->interlace = htonl(test_iHDR->interlace);
 }
 
