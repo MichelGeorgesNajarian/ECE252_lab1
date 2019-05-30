@@ -115,10 +115,10 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	//test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	//test->p_IHDR->length = DATA_IHDR_SIZE;
 	free(p_buffer);
-	p_buffer = malloc(sizeof(U8) * 4);
-	memset(p_buffer, 0, sizeof(U8) * 4);
-	fread(p_buffer, 1, sizeof(U8) * 4, pngFiles);
-	for (int i = 0; i < 4; i++) {
+	p_buffer = malloc(sizeof(U8) * CHUNK_TYPE_SIZE);
+	memset(p_buffer, 0, sizeof(U8) * CHUNK_TYPE_SIZE);
+	fread(p_buffer, 1, sizeof(U8) * CHUNK_TYPE_SIZE, pngFiles);
+	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
 		test->p_IHDR->type[i] = *(p_buffer + i);
 	}
 	free(p_buffer);
@@ -201,6 +201,8 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 	memcpy(&chuck_length, p_buffer, CHUNK_LEN_SIZE);
 	chuck_length = htonl(chuck_length);
 
+	test->p_IDAT->length = chuck_length;
+
 	printf("Chunk length %X \n", chuck_length);
 
 	//simple_PNG_p test = malloc(sizeof(struct simple_PNG));
@@ -208,12 +210,16 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 	//test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	//test->p_IHDR->length = DATA_IHDR_SIZE;
 	free(p_buffer);
-	p_buffer = malloc(sizeof(U8) * 4);
-	memset(p_buffer, 0, sizeof(U8) * 4);
-	fread(p_buffer, 1, sizeof(U8) * 4, pngFiles);
-	for (int i = 0; i < 4; i++) {
-		test->p_IHDR->type[i] = *(p_buffer + i);
+	p_buffer = malloc(sizeof(U8) * CHUNK_TYPE_SIZE);
+	memset(p_buffer, 0, sizeof(U8) * CHUNK_TYPE_SIZE);
+	fread(p_buffer, 1, sizeof(U8) * CHUNK_TYPE_SIZE, pngFiles);
+	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
+		test->p_IDAT->type[i] = *(p_buffer + i);
 	}
+	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
+		printf("%02X", test->p_IDAT->type[i]);
+	}
+	free(p_buffer);
 }
 
 void init_iEND()
