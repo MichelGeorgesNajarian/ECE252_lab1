@@ -137,6 +137,8 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight) {
 	memcpy(&test_iHDR->bit_depth, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->bit_depth));
 	incrementation += sizeof(test_iHDR->bit_depth);
 	//test_iHDR->bit_depth = htonl(test_iHDR->height);
+	printf("gibberish %02X\n", *(test->p_IHDR->p_data + incrementation));
+	printf("test_iHDR%02X\n", test_iHDR->bit_depth);
 
 	//doing color type
 	memcpy(&test_iHDR->color_type, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->color_type));
@@ -156,8 +158,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight) {
 	//doing interlace
 	memcpy(&test_iHDR->interlace, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->interlace));
 	incrementation += sizeof(test_iHDR->interlace);
-	printf("gibberish %02X\n", *(test->p_IHDR->p_data + incrementation));
-	printf("test_iHDR%02X\n", test_iHDR->interlace);
+	
 	//test_iHDR->interlace = htonl(test_iHDR->interlace);
 }
 
