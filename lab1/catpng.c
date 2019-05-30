@@ -202,7 +202,7 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 	U32 chuck_length;
 	memcpy(&chuck_length, p_buffer, 4);
 
-	printf("Chuck length %u \n", chuck_length);
+	printf("Chuck length %X \n", chuck_length);
 
 	//simple_PNG_p test = malloc(sizeof(struct simple_PNG));
 
