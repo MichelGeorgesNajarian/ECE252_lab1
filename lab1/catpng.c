@@ -72,6 +72,10 @@ int main(int argc, char **argv)
 	test.p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	memset(test.p_IHDR->p_data, 0, DATA_IHDR_SIZE);
 	test.p_IHDR->length = DATA_IHDR_SIZE;
+	test->p_IDAT = malloc(sizeof(struct chunk));
+	memset(test->p_IDAT, 0, sizeof(struct chunk));
+	test->p_IEND = malloc(sizeof(struct chunk));
+	memset(test->p_IEND, 0, sizeof(struct chunk));
 
 	concatenated_png = fopen("all.png", "w");
     
@@ -81,7 +85,10 @@ int main(int argc, char **argv)
 
 
 	fclose(concatenated_png);
-
+	free(test.p_IHDR);
+	free(test.p_IDAT);
+	free(test.p_IEND);
+	free(test.p_IHDR->p_data);
 	return 0;
 }
 
@@ -181,7 +188,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 }
 
 void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_PNG *test) {
-	test->p_IDAT = malloc(sizeof(struct chunk));
+	
 	U8 *p_buffer = NULL;  /* a buffer that contains some data to play with */
 	U32 crc_val = 0;      /* CRC value                                     */
 	int ret = 0;          /* return value for various routines             */
