@@ -202,15 +202,15 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
 	printf("from pointer: ");
 	for (int i = 0; i < CHUNK_LEN_SIZE; i++) {
-		printf("%X", *(p_buffer + i));
+		printf("%02X", *(p_buffer + i));
 	}
 	printf("\n");
 
 	U32 chuck_length;
 	memcpy(&chuck_length, p_buffer, CHUNK_LEN_SIZE);
-	printf("before htonl: %04X \n", chuck_length);
+	printf("before htonl: %08X \n", chuck_length);
 	chuck_length = htonl(chuck_length);
-	printf("after htonl: %04X \n", chuck_length);
+	printf("after htonl: %08X \n", chuck_length);
 
 	test->p_IDAT->length += chuck_length;
 
