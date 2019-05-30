@@ -65,6 +65,8 @@ int main(int argc, char **argv)
 	struct data_IHDR test_iHDR;
 	struct simple_PNG test;
 	test.p_IHDR = malloc(sizeof(struct chunk));
+	test.p_IHDR.p_data = malloc(DATA_IHDR_SIZE);
+	test.p_IHDR.length = DATA_IHDR_SIZE;
 
 	concatenated_png = fopen("all.png", "w");
     
@@ -106,10 +108,10 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	p_buffer = malloc(CHUNK_LEN_SIZE); //get length of data
 	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
 
-	simple_PNG_p test = malloc(sizeof(struct simple_PNG));
+	//simple_PNG_p test = malloc(sizeof(struct simple_PNG));
 	
-	test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
-	test->p_IHDR->length = DATA_IHDR_SIZE;
+	//test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
+	//test->p_IHDR->length = DATA_IHDR_SIZE;
 	free(p_buffer);
 	p_buffer = malloc(sizeof(U8) * 4);
 	fread(p_buffer, 1, sizeof(U8) * 4, pngFiles);
