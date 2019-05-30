@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 
 	for (int i = 1; i < argc; i++) {
 		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test);
-		printf("\nUpdated height is: %04X\n", totalHeight);
+		printf("\nUpdated height is: %04X\n", *(totalHeight));
 	}
 
 	fclose(concatenated_png);
