@@ -69,7 +69,7 @@ int main(int argc, char **argv)
     printf("\n\nCurrent height is: %04X\n", test_iHDR.height);
 
 	for (int i = 1; i < argc; i++) {
-		
+		init_iHDR(&test_iHDR, argv[i], &totalHeight);
 	}
 
 	fclose(concatenated_png);
@@ -131,6 +131,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight) {
 	incrementation += sizeof(test_iHDR->height);
 	test_iHDR->height = htonl(test_iHDR->height);
 	*(totalHeight) += test_iHDR->height;
+	test_iHDR->height = *(totalHeight); //updating max height
 
 	//doing	bit depth
 	memcpy(&test_iHDR->bit_depth, test->p_IHDR->p_data + incrementation, sizeof(test_iHDR->bit_depth));
