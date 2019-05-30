@@ -176,10 +176,6 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	p_buffer = malloc(CHUNK_CRC_SIZE);
 	memset(p_buffer, 0, CHUNK_CRC_SIZE);
 	fread(p_buffer, 1, CHUNK_CRC_SIZE, pngFiles);
-	for (int i = 0; i < CHUNK_CRC_SIZE; i++) {
-		printf("%02X", *(p_buffer + i));
-	}
-	printf("\n");
 	free(p_buffer);
 	init_iDAT(pngFiles, png_name, totalHeight, test);
 }
@@ -191,22 +187,11 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 	U64 len_def = 0;      /* compressed data length                        */
 	U64 len_inf = 0;      /* uncompressed data length                      */
 
-	p_buffer = malloc(CHUNK_CRC_SIZE + 1); //get length of data
-	memset(p_buffer, 0, CHUNK_CRC_SIZE);
-	fread(p_buffer, 1, CHUNK_CRC_SIZE, pngFiles);
-	
-	for (int i = 0; i < CHUNK_LEN_SIZE; i++) {
-		printf("%X", *(p_buffer + i));
-	}
-	printf("\n");
-	
-	free(p_buffer);
-
 	p_buffer = malloc(CHUNK_LEN_SIZE +1); //get length of data
 	memset(p_buffer, 0, CHUNK_LEN_SIZE);
 
 	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
-
+	printf("from pointer: ");
 	for (int i = 0; i < CHUNK_LEN_SIZE; i++) {
 		printf("%X", *(p_buffer + i));
 	}
@@ -215,7 +200,7 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 	U32 chuck_length;
 	memcpy(&chuck_length, p_buffer, CHUNK_LEN_SIZE);
 
-	printf("Chuck length %X \n", chuck_length);
+	printf("Chunk length %X \n", chuck_length);
 
 	//simple_PNG_p test = malloc(sizeof(struct simple_PNG));
 
