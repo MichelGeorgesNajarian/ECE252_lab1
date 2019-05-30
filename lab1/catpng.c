@@ -188,7 +188,7 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 	memset(p_buffer, 0, CHUNK_CRC_SIZE);
 	fread(p_buffer, 1, CHUNK_CRC_SIZE, pngFiles);
 	for (int i = 0; i < CHUNK_CRC_SIZE; i++) {
-		printf("%X", *(p_buffer + i));
+		//printf("%X", *(p_buffer + i));
 	}
 	printf("\n");
 	printf("\n");
