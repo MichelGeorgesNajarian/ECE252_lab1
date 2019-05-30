@@ -47,7 +47,7 @@ void init_data(U8 *buf, int len)
 }
 
 int isPng(char *);
-void init_iHDR(struct data_IHDR *, char *, U32 *);
+void init_iHDR(struct data_IHDR *, char *, U32 *, struct simple_PNG);
 
 int main(int argc, char **argv)
 {
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     printf("\n\nCurrent height is: %04X\n", test_iHDR.height);
 
 	for (int i = 1; i < argc; i++) {
-		init_iHDR(&test_iHDR, argv[i], &totalHeight);
+		init_iHDR(&test_iHDR, argv[i], &totalHeight, test);
 		printf("width: %04X\nheight: %04X\nbit depth: %02X\ncolor type: %02X\ncompression: %02X\nfilter: %02X\ninterlace: %02X\n", test_iHDR.width, test_iHDR.height, test_iHDR.bit_depth, test_iHDR.color_type, test_iHDR.compression, test_iHDR.filter, test_iHDR.interlace);
 		printf("\n\nCurrent height is: %04X\n", test_iHDR.height);
 		printf("-----------------------------------------------------------------\n");
@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight) {
+void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, struct simple_PNG test) {
 	FILE *pngFiles;
 	U8 *p_buffer = NULL;  /* a buffer that contains some data to play with */
 	U32 crc_val = 0;      /* CRC value                                     */
