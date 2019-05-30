@@ -208,7 +208,7 @@ void init_iDAT(FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_P
 
 	U32 chuck_length;
 	for (int i = 0; i < sizeof(U32); i++) {
-		&chuck_length + i = p_buffer + i;
+		*(&chuck_length + i) = *(p_buffer + i);
 	}
 	//memcpy(&chuck_length, p_buffer + CHUNK_LEN_SIZE, -4);
 	printf("before htonl: %X \n", chuck_length);
