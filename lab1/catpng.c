@@ -360,6 +360,7 @@ void init_iEND(struct data_IHDR *test_iHDR, FILE *pngFiles, U32 *totalHeight, st
 	memcpy(&chuck_length, p_buffer, CHUNK_CRC_SIZE);
 	chuck_length = htonl(chuck_length);
 	test->p_IEND->crc = chuck_length;
+	printf("crc value %08X\n", test->p_IEND->crc);
 	fclose(pngFiles);
 }
 
