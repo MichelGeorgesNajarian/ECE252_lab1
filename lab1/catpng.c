@@ -233,10 +233,11 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	U64 lengthInf = 0;
 	U64 lengthCur = 0;
 	U8 *currData = malloc((test_iHDR->width*4 + 1) * *(totalHeight));
+	
+	memset(currData, 0, (test_iHDR->width * 4 + 1) * *(totalHeight));
 	printf("from pointer: ");
 	printf("\n");
 
-	memset(currData, 0, (test_iHDR->width * 4 + 1) * *(totalHeight));
 	ret = mem_inf(inflated, &lengthInf, test->p_IDAT->p_data, test->p_IDAT->length - chuck_length);
 	ret = mem_inf(currData, lengthCur, p_buffer, chuck_length);
 	char *new_data;
