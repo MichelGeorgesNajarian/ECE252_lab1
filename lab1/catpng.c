@@ -134,9 +134,11 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	free(p_buffer);
 
 	p_buffer = malloc(CHUNK_LEN_SIZE + 1); //get length of data
-	memset(p_buffer, 0, CHUNK_LEN_SIZE +1);
+	memset(p_buffer, 0, CHUNK_LEN_SIZE);
 	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
-	p_buffer[CHUNK_LEN_SIZE] = '\0';
+	//p_buffer[CHUNK_LEN_SIZE] = '\0';
+	memcpy(&test->p_IHDR->length, p_buffer, CHUNK_LEN_SIZE);
+	test->p_IHDR->length = htonl(test->p_IHDR->length);
 	//simple_PNG_p test = malloc(sizeof(struct simple_PNG));
 	
 	//test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
