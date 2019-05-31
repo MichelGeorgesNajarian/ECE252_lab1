@@ -370,7 +370,7 @@ void init_iEND(struct data_IHDR *test_iHDR, FILE *pngFiles, U32 *totalHeight, st
 
 U8* concatenation(const U8 *s1, const U8 *s2) {
 	//printf("First string is: %s | Second string is: %s\n", s1, s2);
-	printf("Size of the first string %04X | Size of the second string: %04X\n", strlen(s1), strlen(s2))
+	printf("Size of the first string %04X | Size of the second string: %04X\n", strlen(s1), strlen(s2);
 	char *con = malloc(strlen(s1) + strlen(s2) + 1); /*length of s1 + length of s2 + \0 + "/" since it's added between the concatenations*/
 	memset(con, 0, strlen(s1) + strlen(s2) + 1);
 	strcpy(con, s1);
