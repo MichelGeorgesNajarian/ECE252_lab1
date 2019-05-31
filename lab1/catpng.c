@@ -92,9 +92,6 @@ int main(int argc, char **argv)
 	test.p_IHDR->crc = crc(test.p_IHDR->p_data, test.p_IDAT->length);
 	buildPng(&test, concatenated_png);
 
-	for (int i = 0; i < test->p_IDAT->length; i++) {
-		printf("%02X\n", *(test->p_IDAT->p_data + i));
-	}
 
 	fclose(concatenated_png);
 	free(test.p_IHDR->p_data);
@@ -371,6 +368,10 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 		printf("%02X", test->p_IHDR->type[i]);
 	}
 	printf("\nIHDR: p_data: ");
+
+	for (int i = 0; i < test->p_IDAT->length; i++) {
+		printf("%02X\n", *(test->p_IDAT->p_data + i));
+	}
 	/*for (U8 i = 0; i < test->p_IHDR->length; i++) {
 		printf("%02X", *(test->p_IHDR->p_data + i));
 	}*/
