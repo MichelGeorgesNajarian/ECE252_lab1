@@ -47,14 +47,15 @@ void init_data(U8 *buf, int len)
 }
 
 int isPng(char *);
-void init_iHDR(struct data_IHDR *, char *, U32 *, struct simple_PNG *);
-void init_iDAT(struct data_IHDR *, FILE *, char *, U32 *, struct simple_PNG *);
+void init_iHDR(struct data_IHDR *, char *, U32 *, struct simple_PNG *, int);
+void init_iDAT(struct data_IHDR *, FILE *, char *, U32 *, struct simple_PNG *, int);
 void init_iEND();
 U8* concatenation(const U8 *, const U8 *);
 
 int main(int argc, char **argv)
 {
-	int success;
+	int success, isFirst;
+	isFirst = 0;
 	U32 totalHeight = 0;
 	for (int i = 1; i < argc; i++) {
 		success = isPng(argv[i]);
@@ -75,15 +76,16 @@ int main(int argc, char **argv)
 	test.p_IDAT = malloc(sizeof(struct chunk));
 	memset(test.p_IDAT, 0, sizeof(struct chunk));
 	test.p_IDAT->length = 0;
-	//test.p_IDAT->p_data = malloc(1);
-	//test.p_IDAT->p_data[0] = '\0';
+	test.p_IDAT->p_data = malloc(1);
+	test.p_IDAT->p_data[0] = '\0';
 	test.p_IEND = malloc(sizeof(struct chunk));
 	memset(test.p_IEND, 0, sizeof(struct chunk));
 
 	concatenated_png = fopen("all.png", "w");
     
 	for (int i = 1; i < argc; i++) {
-		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test);
+		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test, isFirst);
+		isFirst = 0;
 	}
 
 
@@ -95,7 +97,7 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, struct simple_PNG *test) {
+void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, struct simple_PNG *test, int isFirst) {
 	FILE *pngFiles;
 	U8 *p_buffer = NULL;  /* a buffer that contains some data to play with */
 	U32 crc_val = 0;      /* CRC value                                     */
@@ -189,10 +191,10 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	memset(p_buffer, 0, CHUNK_CRC_SIZE);
 	fread(p_buffer, 1, CHUNK_CRC_SIZE, pngFiles);
 	free(p_buffer);
-	init_iDAT(test_iHDR, pngFiles, png_name, &curr_chunk_height, test);
+	init_iDAT(test_iHDR, pngFiles, png_name, &curr_chunk_height, test, isFirst);
 }
 
-void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_PNG *test) {
+void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 *totalHeight, struct simple_PNG *test, int isFirst) {
 	
 	U8 *p_buffer = NULL;  /* a buffer that contains some data to play with */
 	U32 crc_val = 0;      /* CRC value                                     */
@@ -237,13 +239,15 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	
 	memset(currData, 0, (test_iHDR->width * 4 + 1) * *(totalHeight));
 	
-	ret = mem_inf(inflated, &lengthInf, test->p_IDAT->p_data, test->p_IDAT->length - chuck_length);
-	if (ret == 0) { /* success */
-		printf("original len = %d, len_def = %lu, len_inf = %lu\n", \
-			BUF_LEN, len_def, len_inf);
-	}
-	else { /* failure */
-		fprintf(stderr, "mem_def failed. ret = %d.\n", ret);
+	if (!isFirst) {
+		ret = mem_inf(inflated, &lengthInf, test->p_IDAT->p_data, test->p_IDAT->length - chuck_length);
+		if (ret == 0) { /* success */
+			printf("original len = %d, len_def = %lu, len_inf = %lu\n", \
+				BUF_LEN, len_def, len_inf);
+		}
+		else { /* failure */
+			fprintf(stderr, "mem_def failed. ret = %d.\n", ret);
+		}
 	}
 	ret = mem_inf(currData, &lengthCur, p_buffer, chuck_length);
 	if (ret == 0) { /* success */
@@ -254,7 +258,14 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 		fprintf(stderr, "mem_def failed. ret = %d.\n", ret);
 	}
 	U8 *new_data;
-	new_data = concatenation(inflated, currData);
+	if (isFirst) {
+		new_data = concatenation('\0', currData);
+	}
+	else
+	{
+		new_data = concatenation(inflated, currData);
+	}
+	
 	free(test->p_IDAT->p_data);
 	U8 *deflated_data = malloc(10*(test_iHDR->width * 4 + 1)*test_iHDR->height);
 	//ret = mem_def(deflated_data, &deflateLength, new_data, lengthCur + lengthInf, Z_DEFAULT_COMPRESSION);
