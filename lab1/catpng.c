@@ -405,7 +405,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	test->p_IHDR->length = htonl(test->p_IHDR->length);
 	fwrite(&test->p_IHDR->type, CHUNK_TYPE_SIZE, 1, concatenated_png);
 	fwrite(test->p_IHDR->p_data, test->p_IHDR->length, 1, concatenated_png);
-	fwrite(&test->p_IHDR->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
+	//fwrite(&test->p_IHDR->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
 	//printf("string iHDR p_data: %s\n", *test->p_IHDR->p_data);
 	test->p_IDAT->length = htonl(test->p_IDAT->length);
 	fwrite(&test->p_IDAT->length, 1 , CHUNK_LEN_SIZE, concatenated_png);
@@ -413,12 +413,6 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	fwrite(&test->p_IDAT->type, 1,  CHUNK_TYPE_SIZE, concatenated_png);
 	fwrite(test->p_IDAT->p_data, 1, test->p_IDAT->length, concatenated_png);
 	
-	//printf("---------------------------------------------------------------------\n");
-	/*printf("IDAT: Length: %08X\nstring length: %08X\n", test->p_IDAT->length, strlen(test->p_IHDR->p_data));
-	printf("IDAT: type: ");*/
-	//for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
-	//	printf("%02X", test->p_IDAT->type[i]);
-	//}
 #if 0
 	printf("\nIDAT: p_data: ");
 	/*for (U8 i = 0; i < test->p_IDAT->length; i++) {
@@ -435,37 +429,6 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	test->p_IEND->crc = htonl(test->p_IEND->crc);
 	fwrite(&test->p_IEND->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
 }
-
-    /* Step 1.2: Fill the buffer with some data */
-//    init_data(p_buffer, BUF_LEN);
-//
-//    /* Step 2: Demo how to use zlib utility */
-//    ret = mem_def(gp_buf_def, &len_def, p_buffer, BUF_LEN, Z_DEFAULT_COMPRESSION);
-//    if (ret == 0) { /* success */
-//        printf("original len = %d, len_def = %lu\n", BUF_LEN, len_def);
-//    } else { /* failure */
-//        fprintf(stderr,"mem_def failed. ret = %d.\n", ret);
-//        return ret;
-//    }
-//    
-//   ret = mem_inf(gp_buf_inf, &len_inf, gp_buf_def, len_def);
-//    if (ret == 0) { /* success */
-//        printf("original len = %d, len_def = %lu, len_inf = %lu\n", \
-//               BUF_LEN, len_def, len_inf);
-//    } else { /* failure */
-//        fprintf(stderr,"mem_def failed. ret = %d.\n", ret);
-//    }
-//
-//    /* Step 3: Demo how to use the crc utility */
-//    crc_val = crc(gp_buf_def, len_def); // down cast the return val to U32
-//    printf("crc_val = %u\n", crc_val);
-//    
-//    /* Clean up */
-//    fclose(pngFiles);
-//    free(p_buffer); /* free dynamically allocated memory */
-//
-//    return 0;
-//}
 
 int isPng(char *fullPath) {
     //printf("isPng path: %s\n",fullPath);
