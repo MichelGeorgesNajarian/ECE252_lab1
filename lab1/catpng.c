@@ -98,8 +98,17 @@ int main(int argc, char **argv)
 	//test.p_IDAT->crc = crc(everything_buffer, test.p_IDAT->length + CHUNK_LEN_SIZE);
 	//printf("i_dat crc value: %04X\n", test.p_IDAT->crc);
 	//free(everything_buffer);
-	U8 *everything_buffer1;
+	U8 *everything_buffer1 = malloc(4 + 13);
 	test.p_IHDR->length = htonl(test.p_IHDR->length);
+	for (int i = 0; i < 4; i++) {
+		*(everything_buffer + i) = test.p_IHDR->type[i];
+		printf("%02X", *(everything_buffer + i));
+	}
+	printf("\n\n");
+	for (int i = 4; i < 17; i++) {
+		*(everything_buffer + i) = *(test.p_IHDR->p_data + 1);
+		printf("%02X", *(everything_buffer + i));
+	}
 	everything_buffer1 = concatenation(&test.p_IHDR->length, test.p_IHDR->p_data);
 	//everything_buffer1 = malloc(test.p_IHDR->length + CHUNK_LEN_SIZE);
 	//everything_buffer1 = &test.p_IHDR->type;
@@ -372,13 +381,13 @@ void init_iEND(struct data_IHDR *test_iHDR, FILE *pngFiles, U32 *totalHeight, st
 
 U8* concatenation(const U8 *s1, const U8 *s2) {
 	//printf("First string is: %s | Second string is: %s\n", s1, s2);
-	printf("Size of the first string %04X | Size of the second string: %04X\n", strlen(s1), strlen(s2));
+	//printf("Size of the first string %04X | Size of the second string: %04X\n", strlen(s1), strlen(s2));
 	for (int i = 0; i < 4; i++) {
-		printf("%02X", *(s1 + i));
+//printf("%02X", *(s1 + i));
 	}
 	printf("\n\n");
 	for (int i = 0; i < 13; i++) {
-		printf("%02X", *(s2 + i));
+	//	printf("%02X", *(s2 + i));
 	}
 	U8 *con = malloc(strlen(s1) + strlen(s2) + 1); /*length of s1 + length of s2 + \0 + "/" since it's added between the concatenations*/
 	memset(con, 0, strlen(s1) + strlen(s2) + 1);
