@@ -106,7 +106,7 @@ int main(int argc, char **argv)
 	}
 	printf("\n\n");
 	for (int i = 4; i < 17; i++) {
-		*(everything_buffer + i) = *(test.p_IHDR->p_data + i);
+		*(everything_buffer + i) = *(test.p_IHDR->p_data + i-4);
 		printf("%02X", *(everything_buffer + i));
 	}
 	//everything_buffer1 = concatenation(&test.p_IHDR->length, test.p_IHDR->p_data);
