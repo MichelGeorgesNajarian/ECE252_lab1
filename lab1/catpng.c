@@ -50,7 +50,7 @@ int isPng(char *);
 void init_iHDR(struct data_IHDR *, char *, U32 *, struct simple_PNG *, int);
 void init_iDAT(struct data_IHDR *, FILE *, U32 *, struct simple_PNG *, int);
 void init_iEND(struct data_IHDR *, FILE *, U32 *, struct simple_PNG *, int);
-U8* concatenation(const U8 *, const U8 *);
+U8* concatenation(const U8 *, const U32, const U8 *, const U32);
 void buildPng(struct simple_PNG *, FILE *);
 
 int main(int argc, char **argv)
@@ -88,6 +88,10 @@ int main(int argc, char **argv)
 		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test, isFirst);
 		isFirst = 0;
 	}
+	U32 crc_idat;
+	crc_idat = concatenation(&test.p_IDAT->type, CHUNK_TYPE_SIZE, test.p_IDAT->p_data, test.p_IDAT->length);
+	test.p_IDAT->crc = htonl(crc_idat);
+
 	
 	buildPng(&test, concatenated_png);
 
@@ -285,13 +289,13 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles,  U32 *totalHeight, s
 	}
 	U8 *new_data;
 	if (isFirst == 1) {
-		new_data = malloc(sizeof(currData));
+		new_data = malloc(lengthCur);
 		new_data = currData;
 	}
 	else
 	{
-		new_data = malloc(sizeof(currData) + sizeof(inflated));
-		new_data = concatenation(inflated, currData);
+		new_data = malloc(lengthInf + lengthCur);
+		new_data = concatenation(inflated, lengthInf, currData, lengthCur);
 	}
 	
 	free(test->p_IDAT->p_data);
@@ -363,22 +367,14 @@ void init_iEND(struct data_IHDR *test_iHDR, FILE *pngFiles, U32 *totalHeight, st
 	fclose(pngFiles);
 }
 
-U8* concatenation(const U8 *s1, const U8 *s2) {
+U8* concatenation(const U8 *s1, const U32 size_s1, const U8 *s2, const U32 size_s2) {
 	//printf("First string is: %s | Second string is: %s\n", s1, s2);
 	//printf("Size of the first string %04X | Size of the second string: %04X\n", strlen(s1), strlen(s2));
-	for (int i = 0; i < 4; i++) {
-//printf("%02X", *(s1 + i));
-	}
-	printf("\n\n");
-	for (int i = 0; i < 13; i++) {
-	//	printf("%02X", *(s2 + i));
-	}
-	U8 *con = malloc(strlen(s1) + strlen(s2) + 1); /*length of s1 + length of s2 + \0 + "/" since it's added between the concatenations*/
-	memset(con, 0, strlen(s1) + strlen(s2) + 1);
-	strcpy(con, s1);
-	con[strlen(s1)] = '\0';
-	strcat(con, s2);
-	con[strlen(con)] = '\0';
+
+	U8 *con = malloc(size_s1 + size_s2); /*length of s1 + length of s2 + \0 + "/" since it's added between the concatenations*/
+	memset(con, 0, size_s1 + size_s2);
+	memcpy(con, s1, size_s1);
+	memcpy(con + s1, s2, size_s2);
 	return con;
 }
 
