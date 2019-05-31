@@ -388,7 +388,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	//}
 	//printf("\nIHDR: p_data: ");
 	unsigned char png_definition[] = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
-	fwrite(&png_definition, 8, 1, concatenated_png);
+	//fwrite(&png_definition, 8, 1, concatenated_png);
 #if 0
 	for (int i = 0; i < test->p_IDAT->length; i++) {
 		printf("%02X\n", *(test->p_IDAT->p_data + i));
