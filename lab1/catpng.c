@@ -92,10 +92,11 @@ int main(int argc, char **argv)
 	everything_buffer = &test.p_IDAT->type;
 	test.p_IDAT->crc = crc(everything_buffer, test.p_IDAT->length + CHUNK_LEN_SIZE);
 	printf("i_dat crc value: %04X\n", test.p_IDAT->crc);
-	free(everything_buffer);
-	everything_buffer = malloc(test.p_IHDR->length + CHUNK_LEN_SIZE);
-	everything_buffer = &test.p_IHDR->type;
-	test.p_IHDR->crc = crc(everything_buffer, test.p_IHDR->length + CHUNK_LEN_SIZE);
+	//free(everything_buffer);
+	U8 *everything_buffer1;
+	everything_buffer1 = malloc(test.p_IHDR->length + CHUNK_LEN_SIZE);
+	everything_buffer1 = &test.p_IHDR->type;
+	test.p_IHDR->crc = crc(everything_buffer1, test.p_IHDR->length + CHUNK_LEN_SIZE);
 	
 	buildPng(&test, concatenated_png);
 
