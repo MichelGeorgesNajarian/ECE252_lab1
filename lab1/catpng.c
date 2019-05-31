@@ -376,21 +376,21 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 		printf("%02X", *(test->p_IHDR->p_data + i));
 	}*/
 	printf("\nIHDR: CRC: %08X\n", test->p_IHDR->crc);
-	//fwrite(&test->p_IHDR->length, 1, CHUNK_LEN_SIZE, concatenated_png);
-	//fwrite(&test->p_IHDR->type, 1, CHUNK_TYPE_SIZE, concatenated_png);
-	//fwrite(test->p_IHDR->p_data, 1, test->p_IHDR->length, concatenated_png);
-	//fwrite(&test->p_IHDR->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
+	fwrite(&test->p_IHDR->length, CHUNK_LEN_SIZE, 1, concatenated_png);
+	fwrite(&test->p_IHDR->type, 1, CHUNK_TYPE_SIZE, concatenated_png);
+	fwrite(test->p_IHDR->p_data, 1, test->p_IHDR->length, concatenated_png);
+	fwrite(&test->p_IHDR->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
 	//printf("string iHDR p_data: %s\n", *test->p_IHDR->p_data);
-	//fwrite(&test->p_IDAT->length, 1 , CHUNK_LEN_SIZE, concatenated_png);
-	//fwrite(&test->p_IDAT->type, 1,  CHUNK_TYPE_SIZE, concatenated_png);
-	//fwrite(test->p_IDAT->p_data, 1, test->p_IDAT->length, concatenated_png);
+	fwrite(&test->p_IDAT->length, 1 , CHUNK_LEN_SIZE, concatenated_png);
+	fwrite(&test->p_IDAT->type, 1,  CHUNK_TYPE_SIZE, concatenated_png);
+	fwrite(test->p_IDAT->p_data, 1, test->p_IDAT->length, concatenated_png);
 	
 	printf("---------------------------------------------------------------------\n");
 	printf("IDAT: Length: %08X\nstring length: %08X\n", test->p_IDAT->length, strlen(test->p_IHDR->p_data));
 	printf("IDAT: type: ");
-	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
-		printf("%02X", test->p_IDAT->type[i]);
-	}
+	//for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
+	//	printf("%02X", test->p_IDAT->type[i]);
+	//}
 	printf("\nIDAT: p_data: ");
 	/*for (U8 i = 0; i < test->p_IDAT->length; i++) {
 		printf("%02X", *(test->p_IDAT->p_data + i));
@@ -399,10 +399,10 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 
 	printf("total length of p_data: %X\n", sizeof(test->p_IDAT->p_data));
 
-	//fwrite(&test->p_IEND->length, 1, CHUNK_LEN_SIZE, concatenated_png);
-	//fwrite(&test->p_IEND->type, 1, CHUNK_TYPE_SIZE, concatenated_png);
-	//fwrite(test->p_IEND->p_data, 1, test->p_IHDR->length, concatenated_png);
-	//fwrite(&test->p_IEND->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
+	fwrite(&test->p_IEND->length, 1, CHUNK_LEN_SIZE, concatenated_png);
+	fwrite(&test->p_IEND->type, 1, CHUNK_TYPE_SIZE, concatenated_png);
+	fwrite(test->p_IEND->p_data, 1, test->p_IHDR->length, concatenated_png);
+	fwrite(&test->p_IEND->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
 }
 
     /* Step 1.2: Fill the buffer with some data */
