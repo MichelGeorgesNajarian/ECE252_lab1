@@ -50,7 +50,7 @@ int isPng(char *);
 void init_iHDR(struct data_IHDR *, char *, U32 *, struct simple_PNG *);
 void init_iDAT(struct data_IHDR *, FILE *, char *, U32 *, struct simple_PNG *);
 void init_iEND();
-U8* concatenation(const U8 *, const U8 *);
+//U8* concatenation(const U8 *, const U8 *);
 
 int main(int argc, char **argv)
 {
@@ -243,7 +243,7 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	ret = mem_inf(currData, &lengthCur, p_buffer, chuck_length);
 	printf("BANANAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	U8 *new_data;
-	new_data = concatenation(inflated, currData);
+	//new_data = concatenation(inflated, currData);
 	free(test->p_IDAT->p_data);
 	U8 *deflated_data = malloc((test_iHDR->width * 4 + 1)*test_iHDR->height);
 	printf("BANANAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -255,16 +255,16 @@ void init_iEND()
 {
 }
 
-U8* concatenation(const U8 *s1, const U8 *s2) {
-	//printf("First string is: %s | Second string is: %s\n", s1, s2);
-	char *con = malloc(strlen(s1) + strlen(s2) + 1); /*length of s1 + length of s2 + \0 + "/" since it's added between the concatenations*/
-	memset(con, 0, strlen(s1) + strlen(s2) + 1);
-	strcpy(con, s1);
-	con[strlen(s1)] = '\0';
-	strcat(con, s2);
-	con[strlen(con)] = '\0';
-	return con;
-}
+//U8* concatenation(const U8 *s1, const U8 *s2) {
+//	//printf("First string is: %s | Second string is: %s\n", s1, s2);
+//	char *con = malloc(strlen(s1) + strlen(s2) + 1); /*length of s1 + length of s2 + \0 + "/" since it's added between the concatenations*/
+//	memset(con, 0, strlen(s1) + strlen(s2) + 1);
+//	strcpy(con, s1);
+//	con[strlen(s1)] = '\0';
+//	strcat(con, s2);
+//	con[strlen(con)] = '\0';
+//	return con;
+//}
 
     /* Step 1.2: Fill the buffer with some data */
 //    init_data(p_buffer, BUF_LEN);
