@@ -156,11 +156,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 		//printf("%02X", *(test->p_IHDR->p_data + i));
 	}
 	free(p_buffer);
-	unsigned int crc_return;
-	crc_return = crc(&crc_buffer, DATA_IHDR_SIZE + CHUNK_TYPE_SIZE);
-	printf("\n\n\nCRC return value %08X\n\n\n", crc_return);
-	test->p_IHDR->crc = crc_return;
-	printf("\n\n\nCRC value in struct: %08X\n\n\n", test->p_IHDR->crc);
+	
 	int incrementation = 0;
 
 	//doing width
@@ -212,9 +208,14 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	printf("\n\n");
 	printf("p_data full value: ");
 	for (int i = 0; i < 13; i++) {
-		printf("%02X", *(test->p_IHDR->p_data + i));
+		crc_buffer[i+4] =  *(test->p_IHDR->p_data + i);
 	}
 	printf("\n\n\n\n\n\n");
+	unsigned int crc_return;
+	crc_return = crc(&crc_buffer, DATA_IHDR_SIZE + CHUNK_TYPE_SIZE);
+	printf("\n\n\nCRC return value %08X\n\n\n", crc_return);
+	test->p_IHDR->crc = crc_return;
+	printf("\n\n\nCRC value in struct: %08X\n\n\n", test->p_IHDR->crc);
 	init_iDAT(test_iHDR, pngFiles, &curr_chunk_height, test, isFirst);
 }
 
