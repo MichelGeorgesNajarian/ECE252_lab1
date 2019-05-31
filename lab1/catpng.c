@@ -293,11 +293,11 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles,  U32 *totalHeight, s
 	test->p_IDAT->p_data = deflated_data;
 	test->p_IDAT->length = deflateLength;
 	for (int i = 0; i < deflateLength; i++) {
-	//	printf("%02X\n", *(test->p_IDAT->p_data + i));
+		printf("%02X\n", *(test->p_IDAT->p_data + i));
 	}
 
 	if (isFirst == 1) {
-		p_buffer = malloc(CHUNK_CRC_SIZE);
+		+ = malloc(CHUNK_CRC_SIZE);
 		memset(p_buffer, 0, CHUNK_CRC_SIZE);
 		fread(p_buffer, 1, CHUNK_CRC_SIZE, pngFiles);
 		free(p_buffer);
