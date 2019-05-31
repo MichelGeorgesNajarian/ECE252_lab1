@@ -157,8 +157,9 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	p_buffer = malloc(test->p_IHDR->length);
 	memset(p_buffer, 0, test->p_IHDR->length);
 	fread(p_buffer, 1, length_ihdr, pngFiles);
-	for (int i = 0; i < test->p_IHDR->length; i++) {
+	for (int i = 0; i < length_ihdr; i++) {
 		*(test->p_IHDR->p_data + i) = *(p_buffer + i);
+		printf("%02X", *(test->p_IHDR->p_data + i));
 	}
 	free(p_buffer);
 
