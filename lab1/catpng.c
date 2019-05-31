@@ -368,10 +368,11 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	//	printf("%02X", test->p_IHDR->type[i]);
 	//}
 	//printf("\nIHDR: p_data: ");
-/*	for (int i = 0; i < test->p_IDAT->length; i++) {
+#if 0
+	for (int i = 0; i < test->p_IDAT->length; i++) {
 		printf("%02X\n", *(test->p_IDAT->p_data + i));
 	}
-#endif*/
+#endif
 	/*for (U8 i = 0; i < test->p_IHDR->length; i++) {
 		printf("%02X", *(test->p_IHDR->p_data + i));
 	}*/
@@ -399,7 +400,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	printf("\nIDAT: CRC: %08X\n", test->p_IDAT->crc);
 
 	printf("total length of p_data: %X\n", sizeof(test->p_IDAT->p_data));
-#enfif
+#endif
 	fwrite(&test->p_IEND->length, 1, CHUNK_LEN_SIZE, concatenated_png);
 	fwrite(&test->p_IEND->type, 1, CHUNK_TYPE_SIZE, concatenated_png);
 	fwrite(test->p_IEND->p_data, 1, test->p_IHDR->length, concatenated_png);
