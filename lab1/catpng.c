@@ -209,6 +209,12 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	memset(p_buffer, 0, CHUNK_CRC_SIZE);
 	fread(p_buffer, 1, CHUNK_CRC_SIZE, pngFiles);
 	free(p_buffer);
+	printf("\n\n");
+	printf("p_data full value: ");
+	for (int i = 0; i < 13; i++) {
+		printf("%02X", *(test->p_IHDR->p_data + i));
+	}
+	printf("\n\n\n\n\n\n");
 	init_iDAT(test_iHDR, pngFiles, &curr_chunk_height, test, isFirst);
 }
 
