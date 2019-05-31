@@ -156,10 +156,11 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 		//printf("%02X", *(test->p_IHDR->p_data + i));
 	}
 	free(p_buffer);
-	int crc_return;
+	unsigned int crc_return;
 	crc_return = crc(&crc_buffer, DATA_IHDR_SIZE + CHUNK_TYPE_SIZE);
 	printf("\n\n\nCRC return value %08X\n\n\n", crc_return);
 	test->p_IHDR->crc = crc_return;
+	printf("\n\n\nCRC value in struct: %08X\n\n\n", test->p_IHDR->crc);
 	int incrementation = 0;
 
 	//doing width
