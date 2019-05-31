@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 	U8 *everything_buffer;
 	everything_buffer = concatenation(&test.p_IDAT->type, test.p_IDAT->p_data);
 	for (int i = 0; i < test.p_IDAT->length; i++) {
-		printf("%02X", *(test.p_IDAT->p_data + i));
+	//	printf("%02X", *(test.p_IDAT->p_data + i));
 	}
 	free(everything_buffer);
 	test.p_IDAT->crc = crc(everything_buffer, test.p_IDAT->length + CHUNK_LEN_SIZE);
@@ -369,7 +369,7 @@ void init_iEND(struct data_IHDR *test_iHDR, FILE *pngFiles, U32 *totalHeight, st
 }
 
 U8* concatenation(const U8 *s1, const U8 *s2) {
-	//printf("First string is: %s | Second string is: %s\n", s1, s2);
+	printf("First string is: %s | Second string is: %s\n", s1, s2);
 	char *con = malloc(strlen(s1) + strlen(s2) + 1); /*length of s1 + length of s2 + \0 + "/" since it's added between the concatenations*/
 	memset(con, 0, strlen(s1) + strlen(s2) + 1);
 	strcpy(con, s1);
