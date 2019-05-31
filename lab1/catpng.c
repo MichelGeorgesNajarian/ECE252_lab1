@@ -222,7 +222,7 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
 		test->p_IDAT->type[i] = *(p_buffer + i);
 	}
-
+	printf("BANANAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	free(p_buffer);
 	p_buffer = malloc(chuck_length + 1);
 	memset(p_buffer, 0, chuck_length);
