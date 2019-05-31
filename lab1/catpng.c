@@ -144,7 +144,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	memcpy(&length_ihdr, p_buffer, CHUNK_LEN_SIZE);
 	length_ihdr = htonl(length_ihdr);
 	test->p_IHDR->length = length_ihdr;
-	test->p_IHDR->length = htonl(test->p_IHDR->length);
+	//test->p_IHDR->length = htonl(test->p_IHDR->length);
 	
 	//test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	//test->p_IHDR->length = DATA_IHDR_SIZE;
