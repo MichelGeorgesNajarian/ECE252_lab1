@@ -239,7 +239,7 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	
 	ret = mem_inf(inflated, &lengthInf, test->p_IDAT->p_data, test->p_IDAT->length - chuck_length);
 	ret = mem_inf(currData, &lengthCur, p_buffer, chuck_length);
-
+	printf("BANANAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	U8 *new_data;
 	new_data = concatenation(inflated, currData);
 	free(test->p_IDAT->p_data);
