@@ -243,7 +243,7 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	printf("\n");
 
 
-	ret = mem_inf(currData, lengthCur, p_buffer, chuck_length);
+	ret = mem_inf(currData, &lengthCur, p_buffer, chuck_length);
 	printf("from pointer: ");
 	printf("\n");
 	char *new_data;
