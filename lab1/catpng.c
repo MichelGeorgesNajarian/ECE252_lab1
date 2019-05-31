@@ -88,31 +88,6 @@ int main(int argc, char **argv)
 		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test, isFirst);
 		isFirst = 0;
 	}
-	//printf("\n\n\nsize to malloc for everything buffer: %08X\n\n\n", test.p_IDAT->length + CHUNK_LEN_SIZE);
-	//U8 *everything_buffer;
-	//everything_buffer = concatenation(&test.p_IDAT->type, test.p_IDAT->p_data);
-	for (int i = 0; i < test.p_IDAT->length; i++) {
-	//	printf("%02X", *(test.p_IDAT->p_data + i));
-	}
-	//free(everything_buffer);
-	//test.p_IDAT->crc = crc(everything_buffer, test.p_IDAT->length + CHUNK_LEN_SIZE);
-	//printf("i_dat crc value: %04X\n", test.p_IDAT->crc);
-	//free(everything_buffer);
-	U8 *everything_buffer = malloc(4 + 13);
-	test.p_IHDR->length = htonl(test.p_IHDR->length);
-	for (int i = 0; i < 4; i++) {
-		*(everything_buffer + i) = test.p_IHDR->type[i];
-		printf("%02X", *(everything_buffer + i));
-	}
-	printf("\n\n");
-	for (int i = 4; i < 17; i++) {
-		*(everything_buffer + i) = *(&test.p_IHDR->p_data + i-4);
-		printf("%02X", *(everything_buffer + i));
-	}
-	//everything_buffer1 = concatenation(&test.p_IHDR->length, test.p_IHDR->p_data);
-	//everything_buffer1 = malloc(test.p_IHDR->length + CHUNK_LEN_SIZE);
-	//everything_buffer1 = &test.p_IHDR->type;
-	test.p_IHDR->crc = crc(everything_buffer, test.p_IHDR->length + CHUNK_LEN_SIZE);
 	
 	buildPng(&test, concatenated_png);
 
@@ -134,6 +109,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	int ret = 0;          /* return value for various routines             */
 	U64 len_def = 0;      /* compressed data length                        */
 	U64 len_inf = 0;      /* uncompressed data length                      */
+	U8 *crc_buffer = NULL;
 
 	/* Step 1: Initialize some data in a buffer */
 	/* Step 1.1: Allocate a dynamic buffer */
@@ -159,6 +135,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	
 	memcpy(&length_ihdr, p_buffer, CHUNK_LEN_SIZE);
 	length_ihdr = htonl(length_ihdr);
+	crc_buffer = malloc(CHUNK_LEN_SIZE + DATA_IHDR_SIZE);
 	test->p_IHDR->length = length_ihdr;
 	//test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	//test->p_IHDR->length = DATA_IHDR_SIZE;
@@ -167,6 +144,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	memset(p_buffer, 0, sizeof(U8) * CHUNK_TYPE_SIZE + 1);
 	fread(p_buffer, 1, sizeof(U8) * CHUNK_TYPE_SIZE, pngFiles);
 	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
+		*(crc_buffer + i) = *(p_buffer + i);
 		test->p_IHDR->type[i] = *(p_buffer + i);
 	}
 	free(p_buffer);
@@ -174,11 +152,14 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	memset(p_buffer, 0, test->p_IHDR->length);
 	fread(p_buffer, 1, length_ihdr, pngFiles);
 	for (int i = 0; i < length_ihdr; i++) {
+		*(crc_buffer + i + 4) = *(p_buffer + i);
 		*(test->p_IHDR->p_data + i) = *(p_buffer + i);
 		printf("%02X", *(test->p_IHDR->p_data + i));
 	}
 	free(p_buffer);
 
+	test->p_IHDR->crc = crc(crc_buffer, DATA_IHDR_SIZE + CHUNK_TYPE_SIZE);
+	free(crc_buffer);
 	int incrementation = 0;
 
 	//doing width
