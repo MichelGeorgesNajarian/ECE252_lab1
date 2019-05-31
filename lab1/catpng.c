@@ -396,6 +396,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	//printf("length ihdr: %08X\n", test->p_IHDR->length);
 	
 	test->p_IHDR->length = htonl(test->p_IHDR->length);
+	printf("%02X\n", test->p_IHDR->length);
 	//fwrite(test->p_IHDR, CHUNK_LEN_SIZE + CHUNK_TYPE_SIZE, 1, concatenated_png);
 	fwrite(&test->p_IHDR->length, CHUNK_LEN_SIZE, 1, concatenated_png);
 	fwrite(&test->p_IHDR->type, CHUNK_TYPE_SIZE, 1, concatenated_png);
