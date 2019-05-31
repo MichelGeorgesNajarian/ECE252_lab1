@@ -91,11 +91,12 @@ int main(int argc, char **argv)
 	U8 *everything_buffer = malloc(test.p_IDAT->length + CHUNK_LEN_SIZE);
 	everything_buffer = &test.p_IDAT->type;
 	test.p_IDAT->crc = crc(everything_buffer, test.p_IDAT->length + CHUNK_LEN_SIZE);
+	printf("i_dat crc value: %04X\n", test.p_IDAT->crc);
 	free(everything_buffer);
 	everything_buffer = malloc(test.p_IHDR->length + CHUNK_LEN_SIZE);
 	everything_buffer = &test.p_IHDR->type;
 	test.p_IHDR->crc = crc(everything_buffer, test.p_IHDR->length + CHUNK_LEN_SIZE);
-	printf("i_HDR crc value: %04X\n", test.p_IHDR->crc);
+	
 	buildPng(&test, concatenated_png);
 
 
