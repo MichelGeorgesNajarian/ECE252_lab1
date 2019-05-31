@@ -75,8 +75,8 @@ int main(int argc, char **argv)
 	test.p_IDAT = malloc(sizeof(struct chunk));
 	memset(test.p_IDAT, 0, sizeof(struct chunk));
 	test.p_IDAT->length = 0;
-	test.p_IDAT->p_data = malloc(1);
-	test.p_IDAT->p_data[0] = '\0';
+	//test.p_IDAT->p_data = malloc(1);
+	//test.p_IDAT->p_data[0] = '\0';
 	test.p_IEND = malloc(sizeof(struct chunk));
 	memset(test.p_IEND, 0, sizeof(struct chunk));
 
