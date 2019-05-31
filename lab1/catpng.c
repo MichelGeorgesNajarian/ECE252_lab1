@@ -55,7 +55,7 @@ U8* concatenation(const U8 *, const U8 *);
 int main(int argc, char **argv)
 {
 	int success, isFirst;
-	isFirst = 0;
+	isFirst = 1;
 	U32 totalHeight = 0;
 	for (int i = 1; i < argc; i++) {
 		success = isPng(argv[i]);
