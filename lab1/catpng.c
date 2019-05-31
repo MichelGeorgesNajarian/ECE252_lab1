@@ -360,7 +360,6 @@ void init_iEND(struct data_IHDR *test_iHDR, FILE *pngFiles, U32 *totalHeight, st
 	memcpy(&chuck_length, p_buffer, CHUNK_CRC_SIZE);
 	chuck_length = htonl(chuck_length);
 	test->p_IEND->crc = chuck_length;
-	printf("crc value %08X\n", test->p_IEND->crc);
 	fclose(pngFiles);
 }
 
@@ -430,6 +429,8 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	//fwrite(&test->p_IEND->length, 1, CHUNK_LEN_SIZE, concatenated_png);
 	//fwrite(&test->p_IEND->type, 1, CHUNK_TYPE_SIZE, concatenated_png);
 	//fwrite(test->p_IEND->p_data, 1, test->p_IEND->length, concatenated_png);
+
+	printf("crc value %08X\n", test->p_IEND->crc);
 	test->p_IEND->crc = htonl(test->p_IEND->crc);
 	fwrite(&test->p_IEND->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
 }
