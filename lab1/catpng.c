@@ -89,8 +89,9 @@ int main(int argc, char **argv)
 		isFirst = 0;
 	}
 	printf("\n\n\nsize to malloc for everything buffer: %08X\n\n\n", test.p_IDAT->length + CHUNK_LEN_SIZE);
-	U8 *everything_buffer = malloc(htonl(test.p_IDAT->length) + CHUNK_LEN_SIZE);
-	everything_buffer = &test.p_IDAT->type;
+	U8 *everything_buffer;
+	everything_buffer = concatenation(&test.p_IDAT->type, test.p_IDAT->p_data);
+	free(everything_buffer);
 	test.p_IDAT->crc = crc(everything_buffer, test.p_IDAT->length + CHUNK_LEN_SIZE);
 	printf("i_dat crc value: %04X\n", test.p_IDAT->crc);
 	//free(everything_buffer);
