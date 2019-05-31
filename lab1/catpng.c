@@ -148,7 +148,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	printf("length_ihdr after htonl %08X \n", length_ihdr);
 	test->p_IHDR->length = length_ihdr;
 
-	printf("length ihdr: %08X\n",p_IHDR->length);
+	printf("length ihdr: %08X\n",test->p_IHDR->length);
 	
 	//test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	//test->p_IHDR->length = DATA_IHDR_SIZE;
