@@ -50,7 +50,7 @@ int isPng(char *);
 void init_iHDR(struct data_IHDR *, char *, U32 *, struct simple_PNG *);
 void init_iDAT(struct data_IHDR *, FILE *, char *, U32 *, struct simple_PNG *);
 void init_iEND();
-char* concatenation(const char *, const char *);
+U8* concatenation(const U8 *, const U8 *);
 
 int main(int argc, char **argv)
 {
@@ -232,31 +232,27 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	memset(inflated, 0, (test_iHDR->width * 4 + 1)*test_iHDR->height);
 	U64 lengthInf = 0;
 	U64 lengthCur = 0;
+	U64 deflateLength = 0;
 	U8 *currData = malloc((test_iHDR->width*4 + 1) * *(totalHeight));
 	
 	memset(currData, 0, (test_iHDR->width * 4 + 1) * *(totalHeight));
 	
 	ret = mem_inf(inflated, &lengthInf, test->p_IDAT->p_data, test->p_IDAT->length - chuck_length);
-	printf("from pointer: ");
-	printf("\n");
-	printf("from pointer: ");
-	printf("\n");
-
-
 	ret = mem_inf(currData, &lengthCur, p_buffer, chuck_length);
-	printf("from pointer: ");
-	printf("\n");
-	char *new_data;
-	
 
+	U8 *new_data;
 	new_data = concatenation(inflated, currData);
+	free(test->p_IDAT->p_data);
+	U8 *deflated_data = malloc((test_iHDR->width * 4 + 1)*test_iHDR->height);
+	ret = mem_def(deflated_data, deflateLength, new_data, lengthCur + lengthInf, Z_DEFAULT_COMPRESSION);
+	test->p_IDAT->p_data = deflated_data;
 }
 
 void init_iEND()
 {
 }
 
-char* concatenation(const char *s1, const char *s2) {
+U8* concatenation(const U8 *s1, const U8 *s2) {
 	//printf("First string is: %s | Second string is: %s\n", s1, s2);
 	char *con = malloc(strlen(s1) + strlen(s2) + 1); /*length of s1 + length of s2 + \0 + "/" since it's added between the concatenations*/
 	memset(con, 0, strlen(s1) + strlen(s2) + 1);
