@@ -334,9 +334,6 @@ void init_iEND(struct data_IHDR *test_iHDR, FILE *pngFiles, U32 *totalHeight, st
 	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
 		test->p_IEND->type[i] = *(p_buffer + i);
 	}
-	for (int i = 0; i < test->p_IDAT->length; i++) {
-		printf("%02X\n", *(test->p_IDAT->p_data + i));
-	}
 	free(p_buffer);
 	p_buffer = malloc(chuck_length + 1);
 	memset(p_buffer, 0, chuck_length);
@@ -347,6 +344,10 @@ void init_iEND(struct data_IHDR *test_iHDR, FILE *pngFiles, U32 *totalHeight, st
 	fread(p_buffer, 1, CHUNK_CRC_SIZE, pngFiles);
 	memcpy(&chuck_length, p_buffer, CHUNK_CRC_SIZE);
 	chuck_length = htonl(chuck_length);
+
+	for (int i = 0; i < test->p_IDAT->length; i++) {
+		printf("%02X\n", *(test->p_IDAT->p_data + i));
+	}
 	test->p_IEND->crc = chuck_length;
 	fclose(pngFiles);
 }
