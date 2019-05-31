@@ -222,8 +222,6 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
 		test->p_IDAT->type[i] = *(p_buffer + i);
 	}
-	printf("from pointer: ");
-	printf("\n");
 
 	free(p_buffer);
 	p_buffer = malloc(chuck_length + 1);
@@ -235,6 +233,9 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	U64 lengthInf = 0;
 	U64 lengthCur = 0;
 	U8 *currData = malloc((test_iHDR->width*4 + 1) * *(totalHeight));
+	printf("from pointer: ");
+	printf("\n");
+
 	memset(currData, 0, (test_iHDR->width * 4 + 1) * *(totalHeight));
 	ret = mem_inf(inflated, &lengthInf, test->p_IDAT->p_data, test->p_IDAT->length - chuck_length);
 	ret = mem_inf(currData, lengthCur, p_buffer, chuck_length);
