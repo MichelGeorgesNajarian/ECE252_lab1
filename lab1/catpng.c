@@ -373,7 +373,7 @@ U8* concatenation(const U8 *s1, const U32 size_s1, const U8 *s2, const U32 size_
 
 	U8 *con = malloc(size_s1 + size_s2); /*length of s1 + length of s2 + \0 + "/" since it's added between the concatenations*/
 	memset(con, 0, size_s1 + size_s2);
-	memcpy(con, s1, size_s1);
+	memcpy(con, size_s1, size_s1);
 	memcpy(con + s1, s2, size_s2);
 	return con;
 }
