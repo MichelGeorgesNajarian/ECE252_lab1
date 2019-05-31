@@ -382,7 +382,9 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 
 	fwrite(&test->p_IDAT->length, CHUNK_LEN_SIZE, 1, concatenated_png);
 	fwrite(&test->p_IDAT->type, CHUNK_TYPE_SIZE, 1, concatenated_png);
-	fwrite(test->p_IDAT->p_data, test->p_IHDR->length, 1, concatenated_png);
+	FILE *test;
+	test = fopen("test.txt", "w");
+	fwrite(test->p_IDAT->p_data, test->p_IHDR->length, 1, test);
 	fwrite(&test->p_IDAT->crc, CHUNK_CRC_SIZE, 1, concatenated_png);
 	//printf("---------------------------------------------------------------------\n");
 	printf("IDAT: Length: %08X\nstring length: %08X\n", test->p_IDAT->length, strlen(test->p_IHDR->p_data));
