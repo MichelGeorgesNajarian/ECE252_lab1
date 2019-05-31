@@ -240,7 +240,7 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles,  U32 *totalHeight, s
 	wait(1000);
 	//printf("p_buffer data: \n")
 	for (int i = 0; i < chuck_length; i++) {
-		printf("%02X\n", *(p_buffer + i));
+		printf("%02X\n", *(test->p_IDAT->p_data + i));
 	}
 	printf("\n");
 	U8 *inflated = malloc((test_iHDR->width * 4 + 1)*test_iHDR->height);
@@ -296,6 +296,9 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles,  U32 *totalHeight, s
     }
 	test->p_IDAT->p_data = deflated_data;
 	test->p_IDAT->length = deflateLength;
+	for (int i = 0; i < deflateLength; i++) {
+		printf("%02X\n", *(test->p_IDAT->p_data + i));
+	}
 
 	if (isFirst == 1) {
 		p_buffer = malloc(CHUNK_CRC_SIZE);
