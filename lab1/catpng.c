@@ -239,14 +239,14 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	
 	memset(currData, 0, (test_iHDR->width * 4 + 1) * *(totalHeight));
 	
-	if (!isFirst) {
+	if (isFirst == 0) {
 		ret = mem_inf(inflated, &lengthInf, test->p_IDAT->p_data, test->p_IDAT->length - chuck_length);
 		if (ret == 0) { /* success */
 			printf("original len = %d, len_def = %lu, len_inf = %lu\n", \
 				BUF_LEN, len_def, len_inf);
 		}
 		else { /* failure */
-			fprintf(stderr, "meksjdfhjksdhfkjshdkfhm_def failed. ret = %d.\n", ret);
+			fprintf(stderr, "mem_def failed. ret = %d.\n", ret);
 		}
 	}
 	ret = mem_inf(currData, &lengthCur, p_buffer, chuck_length);
@@ -258,7 +258,7 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 		fprintf(stderr, "mem_def failed. ret = %d.\n", ret);
 	}
 	U8 *new_data;
-	if (isFirst) {
+	if (isFirst == 1) {
 		new_data = concatenation('\0', currData);
 	}
 	else
