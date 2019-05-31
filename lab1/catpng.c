@@ -82,7 +82,7 @@ int main(int argc, char **argv)
 	test.p_IEND = malloc(sizeof(struct chunk));
 	memset(test.p_IEND, 0, sizeof(struct chunk));
 
-	concatenated_png = fopen("all.png", "w");
+	concatenated_png = fopen("all.png", "wb");
     
 	for (int i = 1; i < argc; i++) {
 		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test, isFirst);
