@@ -99,6 +99,7 @@ int main(int argc, char **argv)
 	//printf("i_dat crc value: %04X\n", test.p_IDAT->crc);
 	//free(everything_buffer);
 	U8 *everything_buffer1;
+	test.p_IHDR->length = htonl(test.p_IHDR->length);
 	everything_buffer1 = concatenation(&test.p_IHDR->length, &test.p_IHDR->p_data);
 	//everything_buffer1 = malloc(test.p_IHDR->length + CHUNK_LEN_SIZE);
 	//everything_buffer1 = &test.p_IHDR->type;
