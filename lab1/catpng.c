@@ -50,11 +50,10 @@ int isPng(char *);
 void init_iHDR(struct data_IHDR *, char *, U32 *, struct simple_PNG *);
 void init_iDAT(struct data_IHDR *, FILE *, char *, U32 *, struct simple_PNG *);
 void init_iEND();
-//U8* concatenation(const U8 *, const U8 *);
+U8* concatenation(const U8 *, const U8 *);
 
 int main(int argc, char **argv)
 {
-	printf("BANANAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	int success;
 	U32 totalHeight = 0;
 	for (int i = 1; i < argc; i++) {
@@ -84,7 +83,6 @@ int main(int argc, char **argv)
 	concatenated_png = fopen("all.png", "w");
     
 	for (int i = 1; i < argc; i++) {
-		printf("BANANAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test);
 	}
 
@@ -224,7 +222,7 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
 		test->p_IDAT->type[i] = *(p_buffer + i);
 	}
-	printf("BANANAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 	free(p_buffer);
 	p_buffer = malloc(chuck_length + 1);
 	memset(p_buffer, 0, chuck_length);
@@ -241,13 +239,12 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	
 	ret = mem_inf(inflated, &lengthInf, test->p_IDAT->p_data, test->p_IDAT->length - chuck_length);
 	ret = mem_inf(currData, &lengthCur, p_buffer, chuck_length);
-	printf("BANANAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 	U8 *new_data;
-	//new_data = concatenation(inflated, currData);
+	new_data = concatenation(inflated, currData);
 	free(test->p_IDAT->p_data);
 	U8 *deflated_data = malloc((test_iHDR->width * 4 + 1)*test_iHDR->height);
-	printf("BANANAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-	//ret = mem_def(deflated_data, &deflateLength, new_data, lengthCur + lengthInf, Z_DEFAULT_COMPRESSION);
+	ret = mem_def(deflated_data, deflateLength, new_data, lengthCur + lengthInf, -1);
 	test->p_IDAT->p_data = deflated_data;
 }
 
@@ -255,16 +252,16 @@ void init_iEND()
 {
 }
 
-//U8* concatenation(const U8 *s1, const U8 *s2) {
-//	//printf("First string is: %s | Second string is: %s\n", s1, s2);
-//	char *con = malloc(strlen(s1) + strlen(s2) + 1); /*length of s1 + length of s2 + \0 + "/" since it's added between the concatenations*/
-//	memset(con, 0, strlen(s1) + strlen(s2) + 1);
-//	strcpy(con, s1);
-//	con[strlen(s1)] = '\0';
-//	strcat(con, s2);
-//	con[strlen(con)] = '\0';
-//	return con;
-//}
+U8* concatenation(const U8 *s1, const U8 *s2) {
+	//printf("First string is: %s | Second string is: %s\n", s1, s2);
+	char *con = malloc(strlen(s1) + strlen(s2) + 1); /*length of s1 + length of s2 + \0 + "/" since it's added between the concatenations*/
+	memset(con, 0, strlen(s1) + strlen(s2) + 1);
+	strcpy(con, s1);
+	con[strlen(s1)] = '\0';
+	strcat(con, s2);
+	con[strlen(con)] = '\0';
+	return con;
+}
 
     /* Step 1.2: Fill the buffer with some data */
 //    init_data(p_buffer, BUF_LEN);
