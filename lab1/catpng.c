@@ -144,8 +144,6 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	memcpy(&length_ihdr, p_buffer, CHUNK_LEN_SIZE);
 	length_ihdr = htonl(length_ihdr);
 	test->p_IHDR->length = length_ihdr;
-	//test->p_IHDR->length = htonl(test->p_IHDR->length);
-	
 	//test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	//test->p_IHDR->length = DATA_IHDR_SIZE;
 	free(p_buffer);
@@ -396,6 +394,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	//printf("\nIHDR: CRC: %08X\n", test->p_IHDR->crc);
 	//printf("length ihdr: %08X\n", test->p_IHDR->length);
 	
+	test->p_IHDR->length = htonl(test->p_IHDR->length);
 	//fwrite(test->p_IHDR, CHUNK_LEN_SIZE + CHUNK_TYPE_SIZE, 1, concatenated_png);
 	fwrite(&test->p_IHDR->length, CHUNK_LEN_SIZE, 1, concatenated_png);
 	fwrite(&test->p_IHDR->type, CHUNK_TYPE_SIZE, 1, concatenated_png);
