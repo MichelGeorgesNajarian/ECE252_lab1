@@ -109,7 +109,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	int ret = 0;          /* return value for various routines             */
 	U64 len_def = 0;      /* compressed data length                        */
 	U64 len_inf = 0;      /* uncompressed data length                      */
-	U8 *crc_buffer = NULL;
+	U8 crc_buffer[17];
 
 	/* Step 1: Initialize some data in a buffer */
 	/* Step 1.1: Allocate a dynamic buffer */
@@ -135,7 +135,6 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	
 	memcpy(&length_ihdr, p_buffer, CHUNK_LEN_SIZE);
 	length_ihdr = htonl(length_ihdr);
-	crc_buffer = malloc(CHUNK_LEN_SIZE + DATA_IHDR_SIZE);
 	test->p_IHDR->length = length_ihdr;
 	//test->p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	//test->p_IHDR->length = DATA_IHDR_SIZE;
@@ -144,21 +143,21 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	memset(p_buffer, 0, sizeof(U8) * CHUNK_TYPE_SIZE + 1);
 	fread(p_buffer, 1, sizeof(U8) * CHUNK_TYPE_SIZE, pngFiles);
 	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
-		*(crc_buffer + i) = *(p_buffer + i);
 		test->p_IHDR->type[i] = *(p_buffer + i);
+		crc_buffer[i] = test->p_IHDR->type[i];
 	}
 	free(p_buffer);
 	p_buffer = malloc(test->p_IHDR->length);
 	memset(p_buffer, 0, test->p_IHDR->length);
 	fread(p_buffer, 1, length_ihdr, pngFiles);
 	for (int i = 0; i < length_ihdr; i++) {
-		*(crc_buffer + i + 4) = *(p_buffer + i);
+		crc_buffer[i + 4] = *(p_buffer + i);
 		*(test->p_IHDR->p_data + i) = *(p_buffer + i);
-		printf("%02X", *(test->p_IHDR->p_data + i));
+		//printf("%02X", *(test->p_IHDR->p_data + i));
 	}
 	free(p_buffer);
 
-	test->p_IHDR->crc = htonl(crc(crc_buffer, DATA_IHDR_SIZE + CHUNK_TYPE_SIZE));
+	test->p_IHDR->crc = htonl(crc(&crc_buffer, DATA_IHDR_SIZE + CHUNK_TYPE_SIZE));
 	free(crc_buffer);
 	int incrementation = 0;
 
