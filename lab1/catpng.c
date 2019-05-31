@@ -383,7 +383,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	//}
 	//printf("\nIHDR: p_data: ");
 	unsigned char png_definition[] = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, '\0' };
-	//fwrite(&png_definition, PNG_SIG_SIZE, 1, concatenated_png);
+	fwrite(&png_definition, PNG_SIG_SIZE, 1, concatenated_png);
 #if 0
 	for (int i = 0; i < test->p_IDAT->length; i++) {
 		printf("%02X\n", *(test->p_IDAT->p_data + i));
@@ -426,11 +426,11 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	printf("total length of p_data: %X\n", sizeof(test->p_IDAT->p_data));
 #endif
 	printf("iend length: %08X\n", test->p_IEND->length);
-	fwrite(&test->p_IEND->length, 1, CHUNK_LEN_SIZE, concatenated_png);
-	fwrite(&test->p_IEND->type, 1, CHUNK_TYPE_SIZE, concatenated_png);
+	//fwrite(&test->p_IEND->length, 1, CHUNK_LEN_SIZE, concatenated_png);
+	//fwrite(&test->p_IEND->type, 1, CHUNK_TYPE_SIZE, concatenated_png);
 	//fwrite(test->p_IEND->p_data, 1, test->p_IEND->length, concatenated_png);
 	test->p_IEND->crc = htonl(test->p_IEND->crc);
-	fwrite(&test->p_IEND->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
+	//fwrite(&test->p_IEND->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
 }
 
     /* Step 1.2: Fill the buffer with some data */
