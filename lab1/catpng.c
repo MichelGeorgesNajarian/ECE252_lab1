@@ -141,7 +141,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 
 	U32 length_ihdr;
 	memcpy(&length_ihdr, p_buffer, CHUNK_LEN_SIZE);
-	length_ihdr = htonl(chuck_length);
+	length_ihdr = htonl(length_ihdr);
 
 	test->p_IHDR->length = length_ihdr;
 	
