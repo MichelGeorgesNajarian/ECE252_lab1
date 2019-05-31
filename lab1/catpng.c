@@ -106,7 +106,7 @@ int main(int argc, char **argv)
 	}
 	printf("\n\n");
 	for (int i = 4; i < 17; i++) {
-		*(everything_buffer + i) = *(test.p_IHDR->p_data + 1);
+		*(everything_buffer + i) = *(test.p_IHDR->p_data + i);
 		printf("%02X", *(everything_buffer + i));
 	}
 	//everything_buffer1 = concatenation(&test.p_IHDR->length, test.p_IHDR->p_data);
@@ -268,7 +268,6 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles,  U32 *totalHeight, s
 	//printf("Size of p_buffer: %02X\n", sizeof(p_buffer));
 	//p_buffer[chuck_length] = '\0';
 	//printf("Chuck length of: %02X\n\n\n", chuck_length);
-	wait(1000);
 	//printf("p_buffer data: \n")
 	U8 *inflated = malloc((test_iHDR->width * 4 + 1)*test_iHDR->height);
 	memset(inflated, 0, (test_iHDR->width * 4 + 1)*test_iHDR->height);
