@@ -244,6 +244,7 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	new_data = concatenation(inflated, currData);
 	free(test->p_IDAT->p_data);
 	U8 *deflated_data = malloc((test_iHDR->width * 4 + 1)*test_iHDR->height);
+	ret = mem_def(deflated_data, &deflateLength, new_data, lengthCur + lengthInf, Z_DEFAULT_COMPRESSION);
 	//ret = mem_def(deflated_data, deflateLength, new_data, lengthCur + lengthInf, -1);
 	test->p_IDAT->p_data = deflated_data;
 }
