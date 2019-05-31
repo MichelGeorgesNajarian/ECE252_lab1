@@ -249,7 +249,7 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	char *new_data;
 	
 
-	//new_data = concatenation(inflated, currData);
+	new_data = concatenation(inflated, currData);
 }
 
 void init_iEND()
