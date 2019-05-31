@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test, isFirst);
 		isFirst = 0;
 	}
-	printf("\n\n\nsize to malloc for everything buffer: %08X\n\n\n", htonl(test.p_IDAT->length) + CHUNK_LEN_SIZE);
+	printf("\n\n\nsize to malloc for everything buffer: %08X\n\n\n", test.p_IDAT->length + CHUNK_LEN_SIZE);
 	U8 *everything_buffer = malloc(htonl(test.p_IDAT->length) + CHUNK_LEN_SIZE);
 	everything_buffer = &test.p_IDAT->type;
 	test.p_IDAT->crc = crc(everything_buffer, test.p_IDAT->length + CHUNK_LEN_SIZE);
