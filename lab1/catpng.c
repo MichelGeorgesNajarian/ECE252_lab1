@@ -241,18 +241,19 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	
 	if (isFirst == 0) {
 		ret = mem_inf(inflated, &lengthInf, test->p_IDAT->p_data, test->p_IDAT->length - chuck_length);
-		if (ret == 0) { /* success */
+		if(ret == 0) { /* success */
 			printf("original len = %d, len_def = %lu, len_inf = %lu\n", \
-				BUF_LEN, len_def, len_inf);
+				chuck_length, len_def, lengthCur);
 		}
 		else { /* failure */
 			fprintf(stderr, "mem_def failed. ret = %d.\n", ret);
 		}
 	}
 	ret = mem_inf(currData, &lengthCur, p_buffer, chuck_length);
+//ret = mem_inf(gp_buf_inf, &len_inf, gp_buf_def, len_def);
 	if (ret == 0) { /* success */
 		printf("original len = %d, len_def = %lu, len_inf = %lu\n", \
-			BUF_LEN, len_def, len_inf);
+			chuck_length, len_def, lengthCur);
 	}
 	else { /* failure */
 		fprintf(stderr, "mem_def failed. ret = %d.\n", ret);
@@ -270,6 +271,13 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	U8 *deflated_data = malloc((test_iHDR->width * 4 + 1)*test_iHDR->height);
 	ret = mem_def(deflated_data, &deflateLength, new_data, lengthCur + lengthInf, Z_DEFAULT_COMPRESSION);
 	//ret = mem_def(deflated_data, deflateLength, new_data, lengthCur + lengthInf, -1);
+	//    ret = mem_def(gp_buf_def, &len_def, p_buffer, BUF_LEN, Z_DEFAULT_COMPRESSION);
+	if (ret == 0) { /* success */
+	   printf("original len = %d, len_def = %lu\n", lengthCur + lengthInf, deflateLength);
+    } else { /* failure */
+       fprintf(stderr,"mem_def failed. ret = %d.\n", ret);
+       return ret;
+    }
 	test->p_IDAT->p_data = deflated_data;
 }
 
