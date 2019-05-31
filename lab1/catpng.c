@@ -246,7 +246,7 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 				BUF_LEN, len_def, len_inf);
 		}
 		else { /* failure */
-			fprintf(stderr, "mem_def failed. ret = %d.\n", ret);
+			fprintf(stderr, "meksjdfhjksdhfkjshdkfhm_def failed. ret = %d.\n", ret);
 		}
 	}
 	ret = mem_inf(currData, &lengthCur, p_buffer, chuck_length);
