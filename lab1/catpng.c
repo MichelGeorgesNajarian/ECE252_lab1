@@ -402,11 +402,11 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	test->p_IHDR->length = htonl(test->p_IHDR->length);
 	fwrite(&test->p_IHDR->length, CHUNK_LEN_SIZE, 1, concatenated_png);
 	fwrite(&test->p_IHDR->type, CHUNK_TYPE_SIZE, 1, concatenated_png);
-	fwrite(test->p_IHDR->p_data, test->p_IHDR->length, 1, concatenated_png);
+	//fwrite(test->p_IHDR->p_data, test->p_IHDR->length, 1, concatenated_png);
 	//fwrite(&test->p_IHDR->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
 	//printf("string iHDR p_data: %s\n", *test->p_IHDR->p_data);
-	//fwrite(&test->p_IDAT->length, 1 , CHUNK_LEN_SIZE, concatenated_png);
-	//fwrite(&test->p_IDAT->type, 1,  CHUNK_TYPE_SIZE, concatenated_png);
+	fwrite(&test->p_IDAT->length, 1 , CHUNK_LEN_SIZE, concatenated_png);
+	fwrite(&test->p_IDAT->type, 1,  CHUNK_TYPE_SIZE, concatenated_png);
 	//fwrite(test->p_IDAT->p_data, 1, test->p_IDAT->length, concatenated_png);
 	
 	//printf("---------------------------------------------------------------------\n");
