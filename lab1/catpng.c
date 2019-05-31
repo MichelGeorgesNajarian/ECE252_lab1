@@ -158,7 +158,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	}
 	free(p_buffer);
 
-	test->p_IHDR->crc = crc(crc_buffer, DATA_IHDR_SIZE + CHUNK_TYPE_SIZE);
+	test->p_IHDR->crc = htonl(crc(crc_buffer, DATA_IHDR_SIZE + CHUNK_TYPE_SIZE));
 	free(crc_buffer);
 	int incrementation = 0;
 
