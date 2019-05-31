@@ -204,13 +204,13 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	memset(p_buffer, 0, CHUNK_LEN_SIZE);
 
 	fread(p_buffer, 1, CHUNK_LEN_SIZE, pngFiles);
+	printf("ksjdhfkjsdjfklskfjlskdjfjlskjdf");
 	printf("from pointer: ");
 	for (int i = 0; i < CHUNK_LEN_SIZE; i++) {
 		printf("%02X", *(p_buffer + i));
 	}
 	printf("\n");
 
-	printf("ksjdhfkjsdjfklskfjlskdjfjlskjdf");
 	U32 chuck_length;
 	memcpy(&chuck_length, p_buffer, CHUNK_LEN_SIZE);
 	chuck_length = htonl(chuck_length);
