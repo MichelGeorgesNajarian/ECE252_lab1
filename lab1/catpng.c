@@ -429,6 +429,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	fwrite(&test->p_IEND->length, 1, CHUNK_LEN_SIZE, concatenated_png);
 	fwrite(&test->p_IEND->type, 1, CHUNK_TYPE_SIZE, concatenated_png);
 	//fwrite(test->p_IEND->p_data, 1, test->p_IEND->length, concatenated_png);
+	test->p_IEND->crc = htonl(test->p_IEND->crc);
 	fwrite(&test->p_IEND->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
 }
 
