@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 	U8 *everything_buffer;
 	everything_buffer = concatenation(&test.p_IDAT->type, test.p_IDAT->p_data);
 	for (int i = 0; i < test.p_IDAT->length + CHUNK_LEN_SIZE; i++) {
-		printf("%02X\n", *(everything_buffer + i));
+		printf("%02X", *(everything_buffer + i));
 	}
 	free(everything_buffer);
 	test.p_IDAT->crc = crc(everything_buffer, test.p_IDAT->length + CHUNK_LEN_SIZE);
