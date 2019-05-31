@@ -391,7 +391,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	//}
 	printf("\nIDAT: CRC: %08X\n", test->p_IDAT->crc);
 
-	printf("total length of p_data: %X\n", sizeof(p_IDAT->p_data));
+	printf("total length of p_data: %X\n", sizeof(test->p_IDAT->p_data));
 
 	fwrite(&test->p_IEND->length, CHUNK_LEN_SIZE, 1, concatenated_png);
 	fwrite(&test->p_IEND->type, CHUNK_TYPE_SIZE, 1, concatenated_png);
