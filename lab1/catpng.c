@@ -388,7 +388,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	//}
 	//printf("\nIHDR: p_data: ");
 	unsigned char png_definition[] = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, '\0' };
-	fwrite(&png_definition, PNG_SIG_SIZE, 1, concatenated_png);
+	//fwrite(&png_definition, PNG_SIG_SIZE, 1, concatenated_png);
 #if 0
 	for (int i = 0; i < test->p_IDAT->length; i++) {
 		printf("%02X\n", *(test->p_IDAT->p_data + i));
@@ -400,13 +400,13 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	//printf("\nIHDR: CRC: %08X\n", test->p_IHDR->crc);
 	//printf("length ihdr: %08X\n", test->p_IHDR->length);
 	test->p_IHDR->length = htonl(test->p_IHDR->length);
-	fwrite(&test->p_IHDR->length, CHUNK_LEN_SIZE, 1, concatenated_png);
+	//fwrite(&test->p_IHDR->length, CHUNK_LEN_SIZE, 1, concatenated_png);
 	fwrite(&test->p_IHDR->type, CHUNK_TYPE_SIZE, 1, concatenated_png);
 	//fwrite(test->p_IHDR->p_data, test->p_IHDR->length, 1, concatenated_png);
 	//fwrite(&test->p_IHDR->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
 	//printf("string iHDR p_data: %s\n", *test->p_IHDR->p_data);
-	fwrite(&test->p_IDAT->length, 1 , CHUNK_LEN_SIZE, concatenated_png);
-	fwrite(&test->p_IDAT->type, 1,  CHUNK_TYPE_SIZE, concatenated_png);
+	//fwrite(&test->p_IDAT->length, 1 , CHUNK_LEN_SIZE, concatenated_png);
+	//fwrite(&test->p_IDAT->type, 1,  CHUNK_TYPE_SIZE, concatenated_png);
 	//fwrite(test->p_IDAT->p_data, 1, test->p_IDAT->length, concatenated_png);
 	
 	//printf("---------------------------------------------------------------------\n");
