@@ -88,8 +88,14 @@ int main(int argc, char **argv)
 		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test, isFirst);
 		isFirst = 0;
 	}
-	test.p_IDAT->crc = crc(test.p_IDAT->p_data, test.p_IDAT->length);
-	test.p_IHDR->crc = crc(test.p_IHDR->p_data, test.p_IDAT->length);
+	U8 *everything_buffer = malloc(test.p_IDAT->length + CHUNK_LEN_SIZE);
+	everything_buffer = &test.p_IDAT->type;
+	test.p_IDAT->crc = crc(everything_buffer, test.p_IDAT->length + CHUNK_LEN_SIZE);
+	free(everything_buffer);
+	everything_buffer = malloc(test.p_IHDR->length + CHUNK_LEN_SIZE);
+	everything_buffer = &test.p_IHDR->type;
+	test.p_IHDR->crc = crc(everything_buffer, test.p_IHDR->length + CHUNK_LEN_SIZE);
+	printf("i_HDR crc value: %04X\n", test.p_IHDR->crc);
 	buildPng(&test, concatenated_png);
 
 
@@ -368,6 +374,8 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	//	printf("%02X", test->p_IHDR->type[i]);
 	//}
 	//printf("\nIHDR: p_data: ");
+	unsigned char png_definition[] = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
+	fwrite(&png_definition, 8, 1, concatenated_png);
 #if 0
 	for (int i = 0; i < test->p_IDAT->length; i++) {
 		printf("%02X\n", *(test->p_IDAT->p_data + i));
