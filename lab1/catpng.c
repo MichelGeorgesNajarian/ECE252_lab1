@@ -92,6 +92,10 @@ int main(int argc, char **argv)
 	test.p_IHDR->crc = crc(test.p_IHDR->p_data, test.p_IDAT->length);
 	buildPng(&test, concatenated_png);
 
+	for (int i = 0; i < test->p_IDAT->length; i++) {
+		printf("%02X\n", *(test->p_IDAT->p_data + i));
+	}
+
 	fclose(concatenated_png);
 	free(test.p_IHDR->p_data);
 	free(test.p_IDAT->p_data);
@@ -344,10 +348,6 @@ void init_iEND(struct data_IHDR *test_iHDR, FILE *pngFiles, U32 *totalHeight, st
 	fread(p_buffer, 1, CHUNK_CRC_SIZE, pngFiles);
 	memcpy(&chuck_length, p_buffer, CHUNK_CRC_SIZE);
 	chuck_length = htonl(chuck_length);
-
-	for (int i = 0; i < test->p_IDAT->length; i++) {
-		printf("%02X\n", *(test->p_IDAT->p_data + i));
-	}
 	test->p_IEND->crc = chuck_length;
 	fclose(pngFiles);
 }
