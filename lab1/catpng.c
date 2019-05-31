@@ -54,6 +54,7 @@ U8* concatenation(const U8 *, const U8 *);
 
 int main(int argc, char **argv)
 {
+	printf("BANANAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	int success;
 	U32 totalHeight = 0;
 	for (int i = 1; i < argc; i++) {
