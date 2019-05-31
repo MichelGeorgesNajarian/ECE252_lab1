@@ -156,7 +156,7 @@ void init_iHDR(struct data_IHDR *test_iHDR, char *png_name, U32 *totalHeight, st
 	free(p_buffer);
 	p_buffer = malloc(test->p_IHDR->length);
 	memset(p_buffer, 0, test->p_IHDR->length);
-	fread(p_buffer, 1, test->p_IHDR->length, pngFiles);
+	fread(p_buffer, 1, htonl(test->p_IHDR->length), pngFiles);
 	for (int i = 0; i < test->p_IHDR->length; i++) {
 		*(test->p_IHDR->p_data + i) = *(p_buffer + i);
 	}
@@ -398,7 +398,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	//fwrite(test->p_IHDR, CHUNK_LEN_SIZE + CHUNK_TYPE_SIZE, 1, concatenated_png);
 	fwrite(&test->p_IHDR->length, CHUNK_LEN_SIZE, 1, concatenated_png);
 	fwrite(&test->p_IHDR->type, CHUNK_TYPE_SIZE, 1, concatenated_png);
-	//fwrite(test->p_IHDR->p_data, test->p_IHDR->length, 1, concatenated_png);
+	fwrite(test->p_IHDR->p_data, test->p_IHDR->length, 1, concatenated_png);
 	//fwrite(&test->p_IHDR->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
 	//printf("string iHDR p_data: %s\n", *test->p_IHDR->p_data);
 	//fwrite(&test->p_IDAT->length, 1 , CHUNK_LEN_SIZE, concatenated_png);
