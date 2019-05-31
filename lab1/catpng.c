@@ -73,7 +73,7 @@ int main(int argc, char **argv)
 	memset(test.p_IHDR, 0, sizeof(struct chunk));
 	test.p_IHDR->p_data = malloc(DATA_IHDR_SIZE);
 	memset(test.p_IHDR->p_data, 0, DATA_IHDR_SIZE);
-	test.p_IHDR->length = DATA_IHDR_SIZE;
+	test.p_IHDR->length = htonl(DATA_IHDR_SIZE);
 	test.p_IDAT = malloc(sizeof(struct chunk));
 	memset(test.p_IDAT, 0, sizeof(struct chunk));
 	test.p_IDAT->length = 0;
