@@ -91,8 +91,8 @@ int main(int argc, char **argv)
 	printf("\n\n\nsize to malloc for everything buffer: %08X\n\n\n", test.p_IDAT->length + CHUNK_LEN_SIZE);
 	U8 *everything_buffer;
 	everything_buffer = concatenation(&test.p_IDAT->type, test.p_IDAT->p_data);
-	for (int i = 0; i < test.p_IDAT->length + CHUNK_LEN_SIZE; i++) {
-		printf("%02X", *(everything_buffer + i));
+	for (int i = 0; i < test.p_IDAT->length; i++) {
+		printf("%02X", *(test.p_IDAT->p_data + i));
 	}
 	free(everything_buffer);
 	test.p_IDAT->crc = crc(everything_buffer, test.p_IDAT->length + CHUNK_LEN_SIZE);
