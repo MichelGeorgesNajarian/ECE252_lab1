@@ -238,7 +238,7 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles,  U32 *totalHeight, s
 	p_buffer[chuck_length] = '\0';
 	printf("Chuck length of: %02X\n\n\n", chuck_length);
 	wait(1000);
-	printf("size of p_buffer: \n", sizeof(p_buffer));
+	printf("size of p_buffer: %02X\n", sizeof(p_buffer));
 	printf("\n");
 	U8 *inflated = malloc((test_iHDR->width * 4 + 1)*test_iHDR->height);
 	memset(inflated, 0, (test_iHDR->width * 4 + 1)*test_iHDR->height);
