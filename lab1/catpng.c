@@ -259,7 +259,7 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	}
 	U8 *new_data;
 	if (isFirst == 1) {
-		new_data = concatenation('\0', currData);
+		new_data = currData;
 	}
 	else
 	{
