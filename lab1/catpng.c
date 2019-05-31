@@ -238,12 +238,23 @@ void init_iDAT(struct data_IHDR *test_iHDR, FILE *pngFiles, char *png_name, U32 
 	memset(currData, 0, (test_iHDR->width * 4 + 1) * *(totalHeight));
 	
 	ret = mem_inf(inflated, &lengthInf, test->p_IDAT->p_data, test->p_IDAT->length - chuck_length);
-	printf("%d\n", ret);
+	if (ret == 0) { /* success */
+		printf("original len = %d, len_def = %lu, len_inf = %lu\n", \
+			BUF_LEN, len_def, len_inf);
+	}
+	else { /* failure */
+		fprintf(stderr, "mem_def failed. ret = %d.\n", ret);
+	}
 	ret = mem_inf(currData, &lengthCur, p_buffer, chuck_length);
-
+	if (ret == 0) { /* success */
+		printf("original len = %d, len_def = %lu, len_inf = %lu\n", \
+			BUF_LEN, len_def, len_inf);
+	}
+	else { /* failure */
+		fprintf(stderr, "mem_def failed. ret = %d.\n", ret);
+	}
 	U8 *new_data;
 	new_data = concatenation(inflated, currData);
-	printf("%s\n", new_data);
 	free(test->p_IDAT->p_data);
 	U8 *deflated_data = malloc(10*(test_iHDR->width * 4 + 1)*test_iHDR->height);
 	//ret = mem_def(deflated_data, &deflateLength, new_data, lengthCur + lengthInf, Z_DEFAULT_COMPRESSION);
