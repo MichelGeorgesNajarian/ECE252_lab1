@@ -83,6 +83,7 @@ int main(int argc, char **argv)
 	concatenated_png = fopen("all.png", "w");
     
 	for (int i = 1; i < argc; i++) {
+		printf("BANANAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		init_iHDR(&test_iHDR, argv[i], &totalHeight, &test);
 	}
 
