@@ -384,7 +384,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	fwrite(&test->p_IDAT->type, CHUNK_TYPE_SIZE, 1, concatenated_png);
 	
 	printf("---------------------------------------------------------------------\n");
-	printf("IDAT: Length: %08X\nstring length: %08X\n", test->p_IDAT->length, strlen(test->p_IHDR->p_data));
+	//printf("IDAT: Length: %08X\nstring length: %08X\n", test->p_IDAT->length, strlen(test->p_IHDR->p_data));
 	printf("IDAT: type: ");
 	for (int i = 0; i < CHUNK_TYPE_SIZE; i++) {
 		printf("%02X", test->p_IDAT->type[i]);
