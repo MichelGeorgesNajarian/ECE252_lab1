@@ -412,6 +412,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	test->p_IDAT->length = htonl(test->p_IDAT->length);
 	fwrite(&test->p_IDAT->type, 1,  CHUNK_TYPE_SIZE, concatenated_png);
 	fwrite(test->p_IDAT->p_data, 1, test->p_IDAT->length, concatenated_png);
+    fwrite(&test->p_IDAT->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
 	
 #if 0
 	printf("\nIDAT: p_data: ");
