@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 		isFirst = 0;
 	}
 	U32 crc_idat;
-	crc_idat = concatenation(&test.p_IDAT->type, CHUNK_TYPE_SIZE, test.p_IDAT->p_data, test.p_IDAT->length);
+	crc_idat = crc(concatenation(&test.p_IDAT->type, CHUNK_TYPE_SIZE, test.p_IDAT->p_data, test.p_IDAT->length), CHUNK_TYPE_SIZE + test.p_IDAT->length);
 	test.p_IDAT->crc = htonl(crc_idat);
 
 	
@@ -413,6 +413,7 @@ void buildPng(struct simple_PNG *test, FILE *concatenated_png)
 	fwrite(&test->p_IDAT->type, 1,  CHUNK_TYPE_SIZE, concatenated_png);
 	fwrite(test->p_IDAT->p_data, 1, test->p_IDAT->length, concatenated_png);
     fwrite(&test->p_IDAT->crc, 1, CHUNK_CRC_SIZE, concatenated_png);
+    printf("IDAT CRC VALUE %08X\n",test->p_IDAT->crc);
 	
 #if 0
 	printf("\nIDAT: p_data: ");
